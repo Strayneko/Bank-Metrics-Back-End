@@ -10,13 +10,13 @@ class BankController extends Controller
 {
     function index(){
         $bank = Bank::query()->get();
-        BaseResponse::success($bank);
+        return BaseResponse::success($bank);
     }
 
     function show($id){
         $bank = Bank::query()->where('id', $id)->first();
         if (!$bank) BaseResponse::error('Data was not found', 404);
-        BaseResponse::success($bank);
+        return BaseResponse::success($bank);
     }
 
     function store(Request $request){
@@ -34,11 +34,11 @@ class BankController extends Controller
         }
         catch (\Illuminate\Validation\ValidationException $validate)
         {
-            BaseResponse::error('Wrong data format');
+            return BaseResponse::error('Wrong data format');
         }
 
         $bank = Bank::create($validated);
-        BaseResponse::success($bank, 'Data was successfully created');
+        return BaseResponse::success($bank, 'Data was successfully created');
     }
 
     function update(Request $request, $id){
@@ -58,18 +58,18 @@ class BankController extends Controller
         }
         catch (\Illuminate\Validation\ValidationException $validate)
         {
-            BaseResponse::error('Wrong data format');
+            return BaseResponse::error('Wrong data format');
         }
 
         $bank->fill($validated);
-        BaseResponse::success($bank, 'Data was successfully updated');
+        return BaseResponse::success($bank, 'Data was successfully updated');
     }
 
     function destroy($id){
         $bank = Bank::query()->where('id', $id)->first();
-        if (!$bank) BaseResponse::error('Data was not found',404);
+        if (!$bank) return BaseResponse::error('Data was not found',404);
         $bank->delete();
-        BaseResponse::success($bank, 'Data was successfully deleted');
+        return BaseResponse::success($bank, 'Data was successfully deleted');
     }
 
 }
