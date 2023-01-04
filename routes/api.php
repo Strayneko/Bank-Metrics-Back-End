@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthLoginController;
 use App\Http\Controllers\AuthRegisterController;
 use App\Http\Controllers\CountryController;
-use App\Http\Response\BaseResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
