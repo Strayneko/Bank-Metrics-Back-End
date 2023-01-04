@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AuthUserContoller;
 use App\Http\Controllers\CountryController;
 use App\Http\Response\BaseResponse;
@@ -24,3 +25,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user/register', [AuthUserContoller::class, 'register']);
 Route::post('/user/login', [AuthUserContoller::class, 'register']);
 Route::get('/countries', [CountryController::class, 'index']);
+
+Route::post('/admin/login', [AuthAdminController::class, 'login']);
