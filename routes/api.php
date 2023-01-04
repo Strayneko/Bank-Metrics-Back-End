@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthLoginController;
-use App\Http\Controllers\AuthRegisterController;
+use App\Http\Controllers\AuthUserContoller;
 use App\Http\Controllers\CountryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
