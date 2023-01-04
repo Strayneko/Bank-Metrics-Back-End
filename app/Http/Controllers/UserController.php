@@ -2,13 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Response\BaseResponse;
+use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    function insert_user_profile(Request $request){
+
+    //untuk mengambil list user
+    function index(){
+        $user = User::with(['user_profile', 'country'])->where('role_id', 1)->get();
+        BaseResponse::success($user);
+    }
+
+    function show($id){
+        $user = User::with(['user_profile', 'country'])->where('role_id', 1)->where('id',$id)->first();
+        if (!$user) BaseResponse::error('Data was not found',404);
+        BaseResponse::success($user);
+    }
+
+    //menambahkan profile user
+    // jangan lupa kasih input type hidden di formnya ya
+    function store_profile(Request $request){
 
         try{
 
@@ -22,10 +39,7 @@ class UserController extends Controller
             ]);
         }
         catch (\Illuminate\Validation\ValidationException $validate){
-            return response()->json([
-                'status' => false,
-                'message' => $validate->validator->errors()
-            ], 403);
+            BaseResponse::error('Wrong data format');
            }
 
 
@@ -35,16 +49,17 @@ class UserController extends Controller
 
         $profile = UserProfile::create($validated);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'data masuk',
-            'data' => $profile
-        ]);
+        BaseResponse::success($profile, 'Data was successfully created');
+
     }
 
-    function edit_user_profile(Request $req, $id)
+    //mengubah profile user
+    function edit_profile(Request $req, $id)
     {
         $profile = UserProfile::query()->where('id', $id)->first();
+
+        if (!$profile) BaseResponse::error('Data was not found', 404);
+
         try{
             $validated = $req->validate([
                 // 'id_country' => '',
@@ -55,10 +70,7 @@ class UserController extends Controller
             ]);
         }
         catch (\Illuminate\Validation\ValidationException $validate){
-            return response()->json([
-                'status' => false,
-                'message' => $validate->validator->errors()
-            ], 403);
+            BaseResponse::error('Wrong data format');
         }
 
         $file = $req->file('photo');
@@ -66,21 +78,14 @@ class UserController extends Controller
         if(!$file){
             $profile->fill($validated);
             $profile->save();
-            return response()->json([
-                'status' => true,
-                'message' => 'data diubah',
-                'data' => $profile
-            ]);
+            BaseResponse::success($profile, 'Data was successfully updated');
         }
 
-        Storage::disk('public')->delete($$profile->photo);
+        Storage::disk('public')->delete($profile->photo);
         $validated['photo']->store('profile', 'public');
         $profile->fill($validated);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'data diubah',
-            'data' => $profile
-        ]);
+        BaseResponse::success($profile, 'Data was successfully updated');
     }
+
 }
