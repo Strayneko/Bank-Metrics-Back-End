@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name', 50);
             $table->tinyInteger('loaning_percentage');
             $table->tinyInteger('max_age');
-            $table->tinyInteger('min_age');
+            $table->tinyInteger('min_age')->default(18);
             // 0. single
             // 1. married
             // 2. both
