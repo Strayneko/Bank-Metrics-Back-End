@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/user/register', [AuthUserContoller::class, 'register']);
-Route::post('/user/login', [AuthUserContoller::class, 'register']);
+Route::post('/user/login', [AuthUserContoller::class, 'login']);
 Route::get('/countries', [CountryController::class, 'index']);
 
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
