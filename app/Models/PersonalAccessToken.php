@@ -11,7 +11,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
 {
     use HasFactory;
 
-    public function boot()
+    protected static function boot()
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
