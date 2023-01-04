@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/user/register', [AuthRegisterController::class, 'register']);
+Route::get('/countries', [CountryController::class, 'index']);
