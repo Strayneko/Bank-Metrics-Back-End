@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthLoginController;
-use App\Http\Controllers\AuthRegisterController;
+use App\Http\Controllers\AuthUserContoller;
 use App\Http\Controllers\CountryController;
 use App\Http\Response\BaseResponse;
 use Illuminate\Http\Request;
@@ -22,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/user/register', [AuthRegisterController::class, 'register']);
+Route::post('/user/register', [AuthUserContoller::class, 'register']);
+Route::post('/user/login', [AuthUserContoller::class, 'register']);
 Route::get('/countries', [CountryController::class, 'index']);
