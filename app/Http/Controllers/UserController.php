@@ -14,13 +14,13 @@ class UserController extends Controller
     //untuk mengambil list user
     function index(){
         $user = User::with(['user_profile', 'country'])->where('role_id', 1)->get();
-        BaseResponse::success($user);
+        return BaseResponse::success($user);
     }
 
     function show($id){
         $user = User::with(['user_profile', 'country'])->where('role_id', 1)->where('id',$id)->first();
-        if (!$user) BaseResponse::error('Data was not found',404);
-        BaseResponse::success($user);
+        if (!$user) return BaseResponse::error('Data was not found',404);
+        return BaseResponse::success($user);
     }
 
     //menambahkan profile user
@@ -39,7 +39,7 @@ class UserController extends Controller
             ]);
         }
         catch (\Illuminate\Validation\ValidationException $validate){
-            BaseResponse::error('Wrong data format');
+            return BaseResponse::error('Wrong data format');
            }
 
 
@@ -49,7 +49,7 @@ class UserController extends Controller
 
         $profile = UserProfile::create($validated);
 
-        BaseResponse::success($profile, 'Data was successfully created');
+        return BaseResponse::success($profile, 'Data was successfully created');
 
     }
 
@@ -70,7 +70,7 @@ class UserController extends Controller
             ]);
         }
         catch (\Illuminate\Validation\ValidationException $validate){
-            BaseResponse::error('Wrong data format');
+            return BaseResponse::error('Wrong data format');
         }
 
         $file = $req->file('photo');
@@ -78,14 +78,14 @@ class UserController extends Controller
         if(!$file){
             $profile->fill($validated);
             $profile->save();
-            BaseResponse::success($profile, 'Data was successfully updated');
+            return BaseResponse::success($profile, 'Data was successfully updated');
         }
 
         Storage::disk('public')->delete($profile->photo);
         $validated['photo']->store('profile', 'public');
         $profile->fill($validated);
 
-        BaseResponse::success($profile, 'Data was successfully updated');
+        return BaseResponse::success($profile, 'Data was successfully updated');
     }
 
 }

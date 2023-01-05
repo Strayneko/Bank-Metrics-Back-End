@@ -10,14 +10,14 @@ class AdminController extends Controller
 {
     function index(){
         $admin = User::query()->where('role_id', 2)->get();
-        BaseResponse::success($admin);
+        return BaseResponse::success($admin);
     }
 
     function show($id){
         $admin = User::query()->where('id',$id)->where('role_id', 2)->first();
-        if (!$admin) BaseResponse::error('Data was not found',404);
+        if (!$admin) return BaseResponse::error('Data was not found',404);
 
-        BaseResponse::success($admin);
+        return BaseResponse::success($admin);
     }
 
     function store(Request $request){
@@ -31,11 +31,11 @@ class AdminController extends Controller
         }
         catch (\Illuminate\Validation\ValidationException $validate)
         {
-            BaseResponse::error('wrong data format');
+            return BaseResponse::error('wrong data format');
         }
 
         $user = User::create($validated);
-        BaseResponse::success($user, 'Data was successfully created');
+        return BaseResponse::success($user, 'Data was successfully created');
     }
 
     function update(Request $request, $id){
@@ -52,12 +52,12 @@ class AdminController extends Controller
         }
         catch (\Illuminate\Validation\ValidationException $validate)
         {
-            BaseResponse::error('wrong data format');
+            return BaseResponse::error('wrong data format');
         }
 
         $admin->fill($validated);
         $admin->save();
-        BaseResponse::success($admin, 'Data was successfully updated');
+        return BaseResponse::success($admin, 'Data was successfully updated');
     }
 
 
