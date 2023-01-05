@@ -22,8 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/user/register', [AuthRegisterController::class, 'register']);
+Route::post('/user/register', [AuthUserContoller::class, 'register']);
+Route::post('/user/login', [AuthUserContoller::class, 'login']);
+Route::get('/countries', [CountryController::class, 'index']);
 
+Route::post('/admin/login', [AuthAdminController::class, 'login']);
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::get('/{id}/show', [AdminController::class, 'show']);
