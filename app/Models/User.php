@@ -63,14 +63,10 @@ class User extends Authenticatable
     // relation to user_profiles table
     public function user_profile()
     {
-        return $this->belongsTo(UserProfile::class, 'user_id');
+        return $this->belongsTo(UserProfile::class, 'id','user_id');
     }
 
     // relation to countries table
-    public function country()
-    {
-        return $this->belongsTo(Country::class, 'country_id');
-    }
 
     // relation to loans table
     public function loan()

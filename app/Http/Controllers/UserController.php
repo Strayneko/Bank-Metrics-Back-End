@@ -13,8 +13,13 @@ class UserController extends Controller
 
     //untuk mengambil list user
     function index(){
-        $user = User::with(['user_profile', 'country'])->where('role_id', 1)->get();
+        $user = User::with(['user_profile'])->where('role_id', 1)->get();
         return BaseResponse::success($user);
+    }
+
+    function index_profile(){
+        $profile = UserProfile::query()->get();
+        return BaseResponse::success($profile);
     }
 
     function show($id){
@@ -30,11 +35,11 @@ class UserController extends Controller
         try{
 
             $validated = $request->validate([
-                // 'country_id' => 'required',
+                'country_id' => 'required',
                 'user_id' =>'required',
                 'marital_status' =>'required',
                 'dob' => 'required',
-                'employment' => 'required',
+                'employement' => 'required',
                 'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         }
@@ -44,9 +49,9 @@ class UserController extends Controller
 
 
 
-        if ($request->file('photo'))$request->file('photo')->store('profile', 'public');
-        $validated['country_id'] = 1;
-
+        if ($request->file('photo'))$path = $request->file('photo')->store('profile', 'public');
+        // $validated['country_id'] = 1;
+        $validated['photo'] = $path;
         $profile = UserProfile::create($validated);
 
         return BaseResponse::success($profile, 'Data was successfully created');
@@ -62,10 +67,10 @@ class UserController extends Controller
 
         try{
             $validated = $req->validate([
-                // 'id_country' => '',
+                'id_country' => '',
                 'marital_status' =>'',
                 'dob' => '',
-                'employment' => '',
+                'employement' => '',
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         }

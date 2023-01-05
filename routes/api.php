@@ -38,7 +38,8 @@ Route::prefix('admin')->group(function () {
 Route::prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{id}/show', [UserController::class, 'show']);
-    Route::post('/profile/{id}', [UserController::class, 'store_profile']);
+    Route::get('/profile', [UserController::class, 'index_profile']);
+    Route::post('/profile', [UserController::class, 'store_profile']);
     Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
     // Route::post('/delete/{id}', [UserController::class,'destroy']);
 });
