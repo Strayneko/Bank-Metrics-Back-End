@@ -38,10 +38,13 @@ class UserController extends Controller
     function store_profile(Request $request)
     {
 
+        // check if user is inserted theri profile
+        $profile = UserProfile::where('user_id', $request->input('user_id'))->first();
+        if ($profile) return BaseResponse::error("You've already submited user profile!");
         try {
 
             $validated = $request->validate([
-                'country_id' => 'required|number|min:1',
+                'country_id' => 'required|numeric|min:1',
                 'user_id' => 'required',
                 'marital_status' => 'required',
                 'dob' => 'required',
@@ -54,9 +57,9 @@ class UserController extends Controller
 
 
 
-        if ($request->file('photo')) $request->file('photo')->store('profile', 'public');
+        if ($request->file('photo')) $photo = $request->file('photo')->store('profile', 'public');
         // check if country id is available in database
-        $country = Country::find($request->input('country_id'))->first();
+        $country = Country::find($request->input('country_id'));
         if (!$country) {
             // get country data by specific id
             $countries = Countries::getCountries();
@@ -67,8 +70,8 @@ class UserController extends Controller
                 'country_id' => $countries['id'],
             ]);
         }
-        $validated['country_id'] = 1;
-
+        $validated['country_id'] = $request->input('country_id');
+        $validated['photo'] = $photo;
         $profile = UserProfile::create($validated);
 
         return BaseResponse::success($profile, 'Data was successfully created');
@@ -83,7 +86,7 @@ class UserController extends Controller
 
         try {
             $validated = $req->validate([
-                'id_country' => '',
+                // 'id_country' => '',
                 'marital_status' => '',
                 'dob' => '',
                 'employement' => '',
