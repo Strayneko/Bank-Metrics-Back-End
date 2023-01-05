@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Countries;
 use App\Http\Response\BaseResponse;
+use App\Models\Country;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
@@ -12,50 +14,64 @@ class UserController extends Controller
 {
 
     //untuk mengambil list user
-    function index(){
+    function index()
+    {
         $user = User::with(['user_profile'])->where('role_id', 1)->get();
         return BaseResponse::success($user);
     }
 
-    function index_profile(){
+    function index_profile()
+    {
         $profile = UserProfile::query()->get();
         return BaseResponse::success($profile);
     }
 
-    function show($id){
-        $user = User::with(['user_profile', 'country'])->where('role_id', 1)->where('id',$id)->first();
-        if (!$user) return BaseResponse::error('Data was not found',404);
+    function show($id)
+    {
+        $user = User::with(['user_profile', 'country'])->where('role_id', 1)->where('id', $id)->first();
+        if (!$user) return BaseResponse::error('Data was not found', 404);
         return BaseResponse::success($user);
     }
 
     //menambahkan profile user
     // jangan lupa kasih input type hidden di formnya ya
-    function store_profile(Request $request){
+    function store_profile(Request $request)
+    {
 
-        try{
+        try {
 
             $validated = $request->validate([
-                'country_id' => 'required',
-                'user_id' =>'required',
-                'marital_status' =>'required',
+                'country_id' => 'required|number|min:1',
+                'user_id' => 'required',
+                'marital_status' => 'required',
                 'dob' => 'required',
                 'employement' => 'required',
                 'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
-        }
-        catch (\Illuminate\Validation\ValidationException $validate){
+        } catch (\Illuminate\Validation\ValidationException $validate) {
             return BaseResponse::error('Wrong data format');
-           }
+        }
 
 
 
-        if ($request->file('photo'))$path = $request->file('photo')->store('profile', 'public');
-        // $validated['country_id'] = 1;
-        $validated['photo'] = $path;
+        if ($request->file('photo')) $request->file('photo')->store('profile', 'public');
+        // check if country id is available in database
+        $country = Country::find($request->input('country_id'))->first();
+        if (!$country) {
+            // get country data by specific id
+            $countries = Countries::getCountries();
+            $countries = $countries->where('id', $request->input('country_id'))->first();
+            // insert country data to countries table
+            $new_country = Country::create([
+                'country_name' => $countries['name'],
+                'country_id' => $countries['id'],
+            ]);
+        }
+        $validated['country_id'] = 1;
+
         $profile = UserProfile::create($validated);
 
         return BaseResponse::success($profile, 'Data was successfully created');
-
     }
 
     //mengubah profile user
@@ -65,22 +81,21 @@ class UserController extends Controller
 
         if (!$profile) BaseResponse::error('Data was not found', 404);
 
-        try{
+        try {
             $validated = $req->validate([
                 'id_country' => '',
-                'marital_status' =>'',
+                'marital_status' => '',
                 'dob' => '',
                 'employement' => '',
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
-        }
-        catch (\Illuminate\Validation\ValidationException $validate){
+        } catch (\Illuminate\Validation\ValidationException $validate) {
             return BaseResponse::error('Wrong data format');
         }
 
         $file = $req->file('photo');
 
-        if(!$file){
+        if (!$file) {
             $profile->fill($validated);
             $profile->save();
             return BaseResponse::success($profile, 'Data was successfully updated');
@@ -92,5 +107,4 @@ class UserController extends Controller
 
         return BaseResponse::success($profile, 'Data was successfully updated');
     }
-
 }
