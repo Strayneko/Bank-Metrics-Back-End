@@ -67,10 +67,7 @@ class UserController extends Controller
 
         try{
             $validated = $req->validate([
-                'id_country' => '',
-                'marital_status' =>'',
-                'dob' => '',
-                'employement' => '',
+                'user_id' =>'required',
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         }
