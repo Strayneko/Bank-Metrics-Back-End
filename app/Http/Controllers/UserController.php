@@ -68,7 +68,7 @@ class UserController extends Controller
             // insert country data to countries table
             $new_country = Country::create([
                 'country_name' => $countries['name'],
-                'country_id' => $countries['id'],
+                'id' => $countries['id'],
             ]);
         }
         $validated['country_id'] = $request->input('country_id');
