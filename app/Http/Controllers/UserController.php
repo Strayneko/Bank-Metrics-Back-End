@@ -28,7 +28,7 @@ class UserController extends Controller
 
     function show($id)
     {
-        $user = User::with(['user_profile', 'country'])->where('role_id', 1)->where('id', $id)->first();
+        $user = User::with(['user_profile'])->where('role_id', 1)->where('id', $id)->first();
         if (!$user) return BaseResponse::error('Data was not found', 404);
         return BaseResponse::success($user);
     }
