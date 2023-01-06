@@ -44,6 +44,7 @@ class UserController extends Controller
         try {
 
             $validated = $request->validate([
+                'address' => 'required',
                 'country_id' => 'required|numeric|min:1',
                 'user_id' => 'required',
                 'marital_status' => 'required',
