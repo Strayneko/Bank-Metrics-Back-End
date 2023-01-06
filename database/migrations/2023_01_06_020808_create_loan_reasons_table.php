@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('loans', function (Blueprint $table) {
+        Schema::create('loan_reasons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            // 0. rejected
-            // 1. accepted
-            $table->tinyInteger('status');
-            $table->integer('loan_amount')->default(0);
+            $table->foreignId('loan_id');
+            $table->foreignId('bank_id');
+            $table->text('rejection_reason');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('loans');
+        Schema::dropIfExists('loan_reasons');
     }
 };
