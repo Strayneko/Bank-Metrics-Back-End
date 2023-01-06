@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Bank;
+use App\Models\LoanReason;
+use App\Models\Loan;
 use Carbon\Carbon;
 
 class LoanController extends Controller
@@ -58,11 +60,22 @@ class LoanController extends Controller
             if ($bank->nationality == 0 && strtolower($user->user_profile->country->country_name) != 'indonesia') $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen employment');
         }
 
-        $accepted_bank = $reasons->filter(function ($reason) {
-            if (count($reason['reasons']) == 0) return $reason;
+        $rejected_banks = $reasons->filter(function ($reason) {
+            if (count($reason['reasons']) > 0) return $reason;
         });
+        dd($rejected_banks);
 
-        if (count($accepted_bank) == 0) {
+        // if no bank accept
+        if (count($rejected_banks) > 0) {
+            $loan_reasons =
+                $loan = Loan::create(
+                    [
+                        'user_id' => $request->input('user_id'),
+                        'loan_amount' => $request->input('loan_amount'),
+                        'status' => 0,
+                        'loaned_amount' => 0,
+                    ]
+                );
         }
     }
 }
