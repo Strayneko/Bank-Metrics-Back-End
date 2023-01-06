@@ -11,9 +11,8 @@ class Bank extends Model
 
     protected $guarded = ['id'];
 
-    // relation to loans table
-    public function loan()
+    public function accepted_bank()
     {
-        return $this->hasMany(Loan::class, 'bank_id');
+        return $this->hasMany(AcceptedBank::class, 'bank_id');
     }
 }
