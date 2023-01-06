@@ -17,12 +17,12 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::creating (function(User $user){
+        static::creating(function (User $user) {
             $user->password = Hash::make($user->password);
         });
 
-        static::updating (function(user $user){
-            if($user->isDirty(['password'])){
+        static::updating(function (user $user) {
+            if ($user->isDirty(['password'])) {
                 $user->password = hash::make($user->password);
             }
         });
@@ -63,7 +63,7 @@ class User extends Authenticatable
     // relation to user_profiles table
     public function user_profile()
     {
-        return $this->belongsTo(UserProfile::class, 'id','user_id');
+        return $this->belongsTo(UserProfile::class, 'id', 'user_id');
     }
 
     // relation to countries table

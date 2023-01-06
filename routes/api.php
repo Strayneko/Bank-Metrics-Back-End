@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthUserContoller;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\LoanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/user/register', [AuthUserContoller::class, 'register']);
 Route::post('/user/login', [AuthUserContoller::class, 'login']);
+
+
 Route::get('/countries', [CountryController::class, 'index']);
 
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
@@ -52,3 +55,10 @@ Route::prefix('bank')->group(function () {
     Route::post('/edit/{id}', [BankController::class, 'update']);
     // Route::post('/delete/{id}', [BankController::class,'destroy']);
 });
+
+// loan group prefix
+Route::prefix('loan')
+    ->controller(LoanController::class)
+    ->group(function () {
+        Route::post('/get_loan', 'loan');
+    });
