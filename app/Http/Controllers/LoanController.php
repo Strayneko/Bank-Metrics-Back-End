@@ -75,7 +75,6 @@ class LoanController extends Controller
                     'bank_id' => 0,
                     'loan_amount' => $request->input('loan_amount'),
                     'status' => 0,
-                    'loaned_amount' => 0,
                 ]
             );
             $rejection_reasons = [];
@@ -96,10 +95,10 @@ class LoanController extends Controller
                 [
                     'user_id' => $request->input('user_id'),
                     'loan_amount' => $request->input('loan_amount'),
-                    'status' => 0,
-                    'loaned_amount' => 0,
+                    'status' => 1,
                 ]
             );
+            return BaseResponse::success($loan, 'Your loan has been accepted!');
         }
     }
 }
