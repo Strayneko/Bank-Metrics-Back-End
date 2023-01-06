@@ -30,7 +30,6 @@ Route::post('/user/login', [AuthUserContoller::class, 'login']);
 
 Route::get('/countries', [CountryController::class, 'index']);
 
-Route::post('/admin/login', [AuthAdminController::class, 'login']);
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::get('/show/{id}', [AdminController::class, 'show']);
