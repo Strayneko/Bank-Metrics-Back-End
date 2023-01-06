@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('loan_reasons', function (Blueprint $table) {
             $table->id();
             $table->foreignId('loan_id');
+            $table->foreignId('bank_id');
             $table->text('rejection_reason');
             $table->timestamps();
         });

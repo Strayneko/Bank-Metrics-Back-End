@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Response\BaseResponse;
+use App\Models\AcceptedBank;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -47,6 +48,8 @@ class LoanController extends Controller
 
         foreach ($banks as $idx => $bank) {
             $reasons[$bank->id] = collect([
+                'bank_id'   => $bank->id,
+                'max_loan'  => $bank->loaning_percentage,
                 'bank_name' => $bank->name,
                 'reasons' => collect([])
             ]);
@@ -60,6 +63,7 @@ class LoanController extends Controller
             if ($bank->nationality == 0 && strtolower($user->user_profile->country->country_name) != 'indonesia') $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen');
         }
 
+
         $accepted_banks = $reasons->filter(function ($reason) {
             if (count($reason['reasons']) == 0) return $reason;
         });
@@ -72,7 +76,6 @@ class LoanController extends Controller
             $loan = Loan::create(
                 [
                     'user_id' => $request->input('user_id'),
-                    'bank_id' => 0,
                     'loan_amount' => $request->input('loan_amount'),
                     'status' => 0,
                 ]
@@ -82,6 +85,7 @@ class LoanController extends Controller
                 foreach ($rejected_bank['reasons'] as $reason) {
                     array_push($rejection_reasons, [
                         'loan_id' => $loan->id,
+                        'bank_id' => $rejected_bank['bank_id'],
                         'rejection_reason' => $reason,
                         'created_at' => now(),
                         'updated_at' => now(),
@@ -98,7 +102,17 @@ class LoanController extends Controller
                     'status' => 1,
                 ]
             );
-            return BaseResponse::success($loan, 'Your loan has been accepted!');
+            $accepted = [];
+            foreach ($accepted_banks as $accepted_bank) {
+                array_push($accepted, [
+                    'loan_id' => $loan->id,
+                    'bank_id' => $accepted_bank['bank_id'],
+                    'loaned_amount' => floor(($accepted_bank['max_loan'] / 100) * $loan->loan_amount),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+            return BaseResponse::success(['loan' => $loan, 'banks' => $accepted], 'Your loan has been accepted!');
         }
     }
 }
