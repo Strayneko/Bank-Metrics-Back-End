@@ -55,27 +55,51 @@ class LoanController extends Controller
             // check age
             if (Carbon::parse($user->user_profile->dob)->age > $bank->max_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person below ' . $bank->max_age . ' years old');
             // check employment status
-            if ($bank->emplyment != $user->user_profile->employement && $bank->employment != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person who has ' . $employments[$bank->employment] . ' employment');
+            if ($bank->employment != $user->user_profile->employement && $bank->employment != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person who has ' . $employments[$bank->employment] . ' employment');
             // check user nationality
-            if ($bank->nationality == 0 && strtolower($user->user_profile->country->country_name) != 'indonesia') $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen employment');
+            if ($bank->nationality == 0 && strtolower($user->user_profile->country->country_name) != 'indonesia') $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen');
         }
 
-        $rejected_banks = $reasons->filter(function ($reason) {
-            if (count($reason['reasons']) > 0) return $reason;
+        $accepted_banks = $reasons->filter(function ($reason) {
+            if (count($reason['reasons']) == 0) return $reason;
         });
-        dd($rejected_banks);
 
         // if no bank accept
-        if (count($rejected_banks) > 0) {
-            $loan_reasons =
-                $loan = Loan::create(
-                    [
-                        'user_id' => $request->input('user_id'),
-                        'loan_amount' => $request->input('loan_amount'),
-                        'status' => 0,
-                        'loaned_amount' => 0,
-                    ]
-                );
+        if (count($accepted_banks) == 0) {
+            $rejected_banks = $reasons->filter(function ($reason) {
+                if (count($reason['reasons']) > 0) return $reason;
+            });
+            $loan = Loan::create(
+                [
+                    'user_id' => $request->input('user_id'),
+                    'bank_id' => 0,
+                    'loan_amount' => $request->input('loan_amount'),
+                    'status' => 0,
+                    'loaned_amount' => 0,
+                ]
+            );
+            $rejection_reasons = [];
+            foreach ($rejected_banks as $rejected_bank) {
+                foreach ($rejected_bank['reasons'] as $reason) {
+                    array_push($rejection_reasons, [
+                        'loan_id' => $loan->id,
+                        'rejection_reason' => $reason,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+            $loan_reason = LoanReason::insert($rejection_reasons);
+            return BaseResponse::success(data: ['reasons' => $rejection_reasons], message: 'Your loan has been rejected!');
+        } else {
+            $loan = Loan::create(
+                [
+                    'user_id' => $request->input('user_id'),
+                    'loan_amount' => $request->input('loan_amount'),
+                    'status' => 0,
+                    'loaned_amount' => 0,
+                ]
+            );
         }
     }
 }
