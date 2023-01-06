@@ -24,6 +24,7 @@ return new class extends Migration
             // 0. half-time
             // 1. full-time
             $table->tinyInteger('employement');
+            $table->text('address');
             $table->text('photo');
             $table->timestamps();
         });

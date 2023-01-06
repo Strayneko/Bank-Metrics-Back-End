@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            BankSeeder::class,
         ]);
     }
 }
