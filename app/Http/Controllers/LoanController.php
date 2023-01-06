@@ -30,7 +30,7 @@ class LoanController extends Controller
         // get user profile
         $user = User::where('id', $request->input('user_id'))->first();
         // check user availability
-        if (!$user) return BaseResponse::error('User not found!');
+        if (!$user) return BaseResponse::error('User not found!', 404);
         // check user role
         if ($user->role_id == 2) return BaseResponse::error("This user is not permitted!");
         // check if user has submitted user profile
@@ -121,8 +121,21 @@ class LoanController extends Controller
                     'updated_at' => now(),
                 ]);
             }
-
+            AcceptedBank::insert($accepted);
             return BaseResponse::success(['loan' => $loan, 'banks' => $accepted], 'Your loan has been accepted!');
         }
+    }
+
+
+    public function list_loan($user_id)
+    {
+        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank' => function ($query) {
+            return $query->get('name');
+        }])->where('user_id', $user_id)->get();
+        // check loan data
+        if (count($loans) == 0) return BaseResponse::error('No loan data found for userid = ' . $user_id, 404);
+        return BaseResponse::success(data: [
+            'loans' => $loans->makeHidden(['created_at', 'updated_at']),
+        ]);
     }
 }

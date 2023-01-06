@@ -17,9 +17,9 @@ class Loan extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // relation to banks table
-    public function bank()
+    // relation to accepted_banks table
+    public function accepted_bank()
     {
-        return $this->belongsTo(Bank::class, 'bank_id');
+        return $this->hasMany(AcceptedBank::class, 'loan_id');
     }
 }
