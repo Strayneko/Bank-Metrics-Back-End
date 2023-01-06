@@ -30,7 +30,7 @@ Route::get('/countries', [CountryController::class, 'index']);
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index']);
-    Route::get('/{id}/show', [AdminController::class, 'show']);
+    Route::get('/show/{id}', [AdminController::class, 'show']);
     Route::post('/', [AdminController::class, 'store']);
     Route::post('/edit/{id}', [AdminController::class, 'update']);
     // Route::post('/delete/{id}', [AdminController::class,'destroy']);
@@ -38,7 +38,7 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'index']);
-    Route::get('/{id}/show', [UserController::class, 'show']);
+    Route::get('/show/{id}', [UserController::class, 'show']);
     Route::get('/profile', [UserController::class, 'index_profile']);
     Route::post('/profile', [UserController::class, 'store_profile']);
     Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
@@ -47,7 +47,7 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('bank')->group(function () {
     Route::get('/', [BankController::class, 'index']);
-    Route::get('/{id}/show', [BankController::class, 'show']);
+    Route::get('/show/{id}', [BankController::class, 'show']);
     Route::post('/', [BankController::class, 'store']);
     Route::post('/edit/{id}', [BankController::class, 'update']);
     // Route::post('/delete/{id}', [BankController::class,'destroy']);
