@@ -16,7 +16,7 @@ class AuthUserContoller extends Controller
             $rq->validate([
                 'name' => ['required'],
                 'email' => ['required', 'unique:users,email', 'email'],
-                'password' => ['required', 'min:8', 'max:10']
+                'password' => ['required', 'min:8']
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
             return response()->json([
@@ -56,5 +56,10 @@ class AuthUserContoller extends Controller
             'Login Success',
             200
         );
+    }
+
+    public function logout(){
+        Auth::user()->tokens()->delete();
+        return BaseResponse::success(null, 'Logout Success');
     }
 }
