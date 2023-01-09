@@ -84,9 +84,11 @@ class UserController extends Controller
     }
 
     //mengubah profile user
-    function edit_profile(Request $req, $id)
+    function edit_profile(Request $req)
     {
-        $profile = UserProfile::query()->where('id', $id)->first();
+        // get authenticated user 
+        $user = Auth::user();
+        $profile = UserProfile::query()->where('id', $user->id)->first();
 
         if (!$profile) BaseResponse::error('Data was not found', 404);
 

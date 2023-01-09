@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/user/register', [AuthUserContoller::class, 'register']);
 Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
+Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
 
 
 Route::get('/countries', [CountryController::class, 'index']);
@@ -38,13 +39,13 @@ Route::prefix('user')
         Route::get('/me', [UserController::class, 'show']);
         Route::get('/profile', [UserController::class, 'index_profile']);
         Route::post('/profile', [UserController::class, 'store_profile']);
-        Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
+        Route::post('/profile/edit', [UserController::class, 'update_profile']);
         // Route::post('/delete/{id}', [UserController::class,'destroy']);
     });
 
-Route::prefix('bank')->group(function () {
+Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [BankController::class, 'index']);
-    Route::get('/{id}/show', [BankController::class, 'show']);
+    Route::get('/show/{id}', [BankController::class, 'show']);
     Route::post('/', [BankController::class, 'store']);
     Route::post('/edit/{id}', [BankController::class, 'update']);
     // Route::post('/delete/{id}', [BankController::class,'destroy']);
