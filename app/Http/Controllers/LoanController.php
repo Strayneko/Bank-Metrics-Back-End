@@ -77,7 +77,7 @@ class LoanController extends Controller
             // insert loan data
             $loan = Loan::create(
                 [
-                    'user_id' => $request->input('user_id'),
+                    'user_id' => $user->id,
                     'loan_amount' => $request->input('loan_amount'),
                     'status' => 0,
                 ]
@@ -103,7 +103,7 @@ class LoanController extends Controller
             // insert loan data
             $loan = Loan::create(
                 [
-                    'user_id' => $request->input('user_id'),
+                    'user_id' => $user->id,
                     'loan_amount' => $request->input('loan_amount'),
                     'status' => 1,
                 ]
@@ -130,7 +130,7 @@ class LoanController extends Controller
     public function list_loan()
     {
         $user_id = Auth::user()->id;
-        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank' => function ($query) {
+        $loans = Loan::with(['accepted_bank', 'loan_reasons', 'accepted_bank.bank' => function ($query) {
             return $query->get('name');
         }])->where('user_id', $user_id)->get();
         // check loan data
