@@ -30,14 +30,6 @@ Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
 
 Route::get('/countries', [CountryController::class, 'index']);
 
-Route::post('/admin/login', [AuthAdminController::class, 'login']);
-Route::prefix('admin')->group(function () {
-    Route::get('/', [AdminController::class, 'index']);
-    Route::get('/{id}/show', [AdminController::class, 'show']);
-    Route::post('/', [AdminController::class, 'store']);
-    Route::post('/edit/{id}', [AdminController::class, 'update']);
-    // Route::post('/delete/{id}', [AdminController::class,'destroy']);
-});
 
 Route::prefix('user')
     ->middleware('auth:sanctum')
