@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -26,9 +27,14 @@ class UserController extends Controller
         return BaseResponse::success($profile);
     }
 
-    function show($id)
+    function show()
     {
-        $user = User::with(['user_profile'])->where('role_id', 1)->where('id', $id)->first();
+        // get current authenticated user
+        $user = Auth::user();
+        // get current authenticated user profile
+        $user_profile = UserProfile::where('user_id', $user->id)->first();
+        $user['profile'] = null;
+        if ($user_profile) $user['profile'] = $user_profile;
         if (!$user) return BaseResponse::error('Data was not found', 404);
         return BaseResponse::success($user);
     }
@@ -87,7 +93,7 @@ class UserController extends Controller
 
         try {
             $validated = $req->validate([
-                'user_id' =>'required',
+                'user_id' => 'required',
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {

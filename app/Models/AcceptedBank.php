@@ -10,4 +10,9 @@ class AcceptedBank extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function bank()
+    {
+        return  $this->belongsTo(Bank::class, 'bank_id', 'id');
+    }
 }

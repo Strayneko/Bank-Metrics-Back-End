@@ -36,14 +36,16 @@ Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
     // Route::post('/delete/{id}', [AdminController::class,'destroy']);
 });
 
-Route::prefix('user')->middleware("auth:sanctum")->group(function () {
-    Route::get('/', [UserController::class, 'index']);
-    Route::get('/show/{id}', [UserController::class, 'show']);
-    Route::get('/profile', [UserController::class, 'index_profile']);
-    Route::post('/profile', [UserController::class, 'store_profile']);
-    Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
-    // Route::post('/delete/{id}', [UserController::class,'destroy']);
-});
+Route::prefix('user')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/me', [UserController::class, 'show']);
+        Route::get('/profile', [UserController::class, 'index_profile']);
+        Route::post('/profile', [UserController::class, 'store_profile']);
+        Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
+        // Route::post('/delete/{id}', [UserController::class,'destroy']);
+    });
 
 Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [BankController::class, 'index']);
@@ -56,6 +58,8 @@ Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
 // loan group prefix
 Route::prefix('loan')
     ->controller(LoanController::class)
+    ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('/get_loan', 'loan');
+        Route::get('/{user_id}', 'list_loan');
     });
