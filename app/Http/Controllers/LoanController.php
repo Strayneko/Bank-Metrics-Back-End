@@ -30,7 +30,7 @@ class LoanController extends Controller
         // get user profile
         $user = User::where('id', $request->input('user_id'))->first();
         // check user availability
-        if (!$user) return BaseResponse::error('User not found!');
+        if (!$user) return BaseResponse::error('User not found!', 404);
         // check user role
         if ($user->role_id == 2) return BaseResponse::error("This user is not permitted!");
         // check if user has submitted user profile
@@ -70,9 +70,11 @@ class LoanController extends Controller
 
         // if no bank accept
         if (count($accepted_banks) == 0) {
+            // filter banks to rejected banks only
             $rejected_banks = $reasons->filter(function ($reason) {
                 if (count($reason['reasons']) > 0) return $reason;
             });
+            // insert loan data
             $loan = Loan::create(
                 [
                     'user_id' => $request->input('user_id'),
@@ -80,6 +82,7 @@ class LoanController extends Controller
                     'status' => 0,
                 ]
             );
+            // collecting reasons into array
             $rejection_reasons = [];
             foreach ($rejected_banks as $rejected_bank) {
                 foreach ($rejected_bank['reasons'] as $reason) {
@@ -92,9 +95,12 @@ class LoanController extends Controller
                     ]);
                 }
             }
-            $loan_reason = LoanReason::insert($rejection_reasons);
+            // insert loan reasons
+            LoanReason::insert($rejection_reasons);
             return BaseResponse::success(data: ['reasons' => $rejection_reasons], message: 'Your loan has been rejected!');
         } else {
+            // if there is bank accepted the loaning
+            // insert loan data
             $loan = Loan::create(
                 [
                     'user_id' => $request->input('user_id'),
@@ -102,6 +108,9 @@ class LoanController extends Controller
                     'status' => 1,
                 ]
             );
+            // filter banks to accepted banks only
+            // if there is 2 banks or more that accept the loan
+            // insert all data
             $accepted = [];
             foreach ($accepted_banks as $accepted_bank) {
                 array_push($accepted, [
@@ -112,7 +121,21 @@ class LoanController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+            AcceptedBank::insert($accepted);
             return BaseResponse::success(['loan' => $loan, 'banks' => $accepted], 'Your loan has been accepted!');
         }
+    }
+
+
+    public function list_loan($user_id)
+    {
+        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank' => function ($query) {
+            return $query->get('name');
+        }])->where('user_id', $user_id)->get();
+        // check loan data
+        if (count($loans) == 0) return BaseResponse::error('No loan data found for userid = ' . $user_id, 404);
+        return BaseResponse::success(data: [
+            'loans' => $loans->makeHidden(['created_at', 'updated_at']),
+        ]);
     }
 }

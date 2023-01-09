@@ -58,4 +58,5 @@ Route::prefix('loan')
     ->controller(LoanController::class)
     ->group(function () {
         Route::post('/get_loan', 'loan');
+        Route::get('/{user_id}', 'list_loan');
     });
