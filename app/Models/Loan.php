@@ -11,6 +11,11 @@ class Loan extends Model
 
     protected $guarded = ['id'];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     // relation to users table
     public function user()
     {
@@ -21,5 +26,10 @@ class Loan extends Model
     public function accepted_bank()
     {
         return $this->hasMany(AcceptedBank::class, 'loan_id');
+    }
+    // relation to loan reassons table
+    public function loan_reason()
+    {
+        return $this->hasMany(LoanReason::class, 'loan_id');
     }
 }

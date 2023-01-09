@@ -77,7 +77,7 @@ class LoanController extends Controller
             // insert loan data
             $loan = Loan::create(
                 [
-                    'user_id' => $request->input('user_id'),
+                    'user_id' => $user->id,
                     'loan_amount' => $request->input('loan_amount'),
                     'status' => 0,
                 ]
@@ -103,7 +103,7 @@ class LoanController extends Controller
             // insert loan data
             $loan = Loan::create(
                 [
-                    'user_id' => $request->input('user_id'),
+                    'user_id' => $user->id,
                     'loan_amount' => $request->input('loan_amount'),
                     'status' => 1,
                 ]
