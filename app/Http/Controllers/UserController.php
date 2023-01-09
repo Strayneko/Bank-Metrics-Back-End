@@ -95,7 +95,7 @@ class UserController extends Controller
 
         try {
             $validated = $req->validate([
-                'user_id' =>'required',
+                'user_id' => 'required',
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
