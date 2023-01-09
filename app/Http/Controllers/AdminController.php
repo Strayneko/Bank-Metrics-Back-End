@@ -34,6 +34,7 @@ class AdminController extends Controller
             return BaseResponse::error('wrong data format');
         }
 
+        $validated['role_id'] = 2;
         $user = User::create($validated);
         return BaseResponse::success($user, 'Data was successfully created');
     }
