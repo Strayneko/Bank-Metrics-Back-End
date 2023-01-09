@@ -28,13 +28,9 @@ Route::post('/user/register', [AuthUserContoller::class, 'register']);
 Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
 Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
 
-Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
-    Route::get('/', [AdminController::class, 'index']);
-    Route::get('/show/{id}', [AdminController::class, 'show']);
-    Route::post('/', [AdminController::class, 'store']);
-    Route::post('/edit/{id}', [AdminController::class, 'update']);
-    // Route::post('/delete/{id}', [AdminController::class,'destroy']);
-});
+
+Route::get('/countries', [CountryController::class, 'index']);
+
 
 Route::prefix('user')
     ->middleware('auth:sanctum')
@@ -61,5 +57,5 @@ Route::prefix('loan')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('/get_loan', 'loan');
-        Route::get('/{user_id}', 'list_loan');
+        Route::get('/list', 'list_loan');
     });
