@@ -33,10 +33,10 @@ Route::prefix('auth')
         Route::post('/login',  'login')->name('login');
     });
 
-Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
-
-
+// list country
 Route::get('/countries', [CountryController::class, 'index']);
+
+
 
 
 Route::prefix('admin')
