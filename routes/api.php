@@ -31,7 +31,8 @@ Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:
 
 Route::get('/countries', [CountryController::class, 'index']);
 
-Route::prefix('admin')->group(function () {
+// Route::prefix('admin')->group(function () {
+
 Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::get('/show/{id}', [AdminController::class, 'show']);
@@ -47,7 +48,7 @@ Route::prefix('user')
         Route::get('/me', [UserController::class, 'show']);
         Route::get('/profile', [UserController::class, 'index_profile']);
         Route::post('/profile', [UserController::class, 'store_profile']);
-        Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
+        Route::post('/profile/edit', [UserController::class, 'update_profile']);
         // Route::post('/delete/{id}', [UserController::class,'destroy']);
     });
 
