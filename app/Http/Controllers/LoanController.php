@@ -11,6 +11,7 @@ use App\Models\Bank;
 use App\Models\LoanReason;
 use App\Models\Loan;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
@@ -140,9 +141,25 @@ class LoanController extends Controller
         ]);
     }
 
-    public function reasons()
+    public function index(Request $request)
     {
-        // get authenticated user data
-        $user = Auth::user();
+
+        // check user access
+        try {
+            $this->authorize('admin');
+        } catch (AuthorizationException $e) {
+            return BaseResponse::error($e->getMessage(), 403);
+        }
+        // get all loan data
+        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank', 'user']);
+
+        // check if there is type query parameter
+        if ($request->query('status')) {
+            // show rejected loans
+            if ($request->get('status') == 'rejected') $loans = $loans->where('status', 0);
+            // show rejected loans
+            if ($request->get('status') == 'accepted') $loans = $loans->where('status', 1);
+        }
+        return BaseResponse::success($loans->get());
     }
 }

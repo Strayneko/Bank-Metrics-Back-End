@@ -77,5 +77,5 @@ Route::prefix('loan')
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/list', 'list_loan');
-        Route::get('/reasons', 'reasons');
+        Route::get('/all', 'index');
     });
