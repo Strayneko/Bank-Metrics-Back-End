@@ -31,6 +31,7 @@ Route::prefix('auth')
     ->group(function () {
         Route::post('/register',  'register');
         Route::post('/login',  'login')->name('login');
+        Route::get('/logout',  'logout')->middleware("auth:sanctum");
     });
 
 Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
@@ -38,6 +39,7 @@ Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:
 
 Route::get('/countries', [CountryController::class, 'index']);
 
+// Route::prefix('admin')->group(function () {
 
 Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [AdminController::class, 'index']);
