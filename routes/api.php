@@ -61,6 +61,7 @@ Route::prefix('bank')->group(function () {
 // loan group prefix
 Route::prefix('loan')
     ->controller(LoanController::class)
+    ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/{user_id}', 'list_loan');
