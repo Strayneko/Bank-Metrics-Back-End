@@ -6,6 +6,7 @@ use App\Http\Response\BaseResponse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthUserContoller extends Controller
 {
@@ -36,27 +37,20 @@ class AuthUserContoller extends Controller
 
     public function login(Request $request)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
 
-        $user = User::query()->where('name', $name)->first();
-        if ($user == null) {
-            return BaseResponse::error('Name Not Found', 400);
-        }
+        // prepare login credential
+        $credentials = [
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+        ];
+        // attemp auth
+        if (!Auth::attempt($credentials)) return BaseResponse::error("Email or password wrong!", 401);
 
-        $user = User::query()->where('email', $email)->first();
-        if ($user == null) {
-            return BaseResponse::error('Email Not Found', 400);
-        }
-
-        if (!Hash::check($password, $user->password)) {
-            return BaseResponse::error('Password Failed', 400);
-        }
-
+        // get user data
+        $user = User::find(Auth::user()->id)->makeHidden(['created_at', 'updated_at']);
         // add auth token to user data
         $token = $user->createToken('auth_token');
-        $user['auth'] = ['tokeen' => 'Bearer ' . $token->plainTextToken];
+        $user['auth'] = ['token' => 'Bearer ' . $token->plainTextToken];
         return BaseResponse::success(
             $user,
             'Login Success',
