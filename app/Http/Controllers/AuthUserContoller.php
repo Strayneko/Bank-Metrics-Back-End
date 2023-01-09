@@ -15,8 +15,8 @@ class AuthUserContoller extends Controller
         try {
             $rq->validate([
                 'name' => ['required'],
-                'email' => ['required', 'unique:users,email'],
-                'password' => ['required', 'min:8']
+                'email' => ['required', 'unique:users,email', 'email'],
+                'password' => ['required', 'min:8', 'max:10']
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
             return response()->json([

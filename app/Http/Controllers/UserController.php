@@ -50,6 +50,7 @@ class UserController extends Controller
         try {
 
             $validated = $request->validate([
+                'address' => 'required',
                 'country_id' => 'required|numeric|min:1',
                 'user_id' => 'required',
                 'marital_status' => 'required',
@@ -73,7 +74,7 @@ class UserController extends Controller
             // insert country data to countries table
             $new_country = Country::create([
                 'country_name' => $countries['name'],
-                'country_id' => $countries['id'],
+                'id' => $countries['id'],
             ]);
         }
         $validated['country_id'] = $request->input('country_id');
@@ -94,10 +95,7 @@ class UserController extends Controller
 
         try {
             $validated = $req->validate([
-                // 'id_country' => '',
-                'marital_status' => '',
-                'dob' => '',
-                'employement' => '',
+                'user_id' => 'required',
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
@@ -113,7 +111,7 @@ class UserController extends Controller
         }
 
         Storage::disk('public')->delete($profile->photo);
-        $validated['photo']->store('profile', 'public');
+        $validated['photo'] = $req->file('photo')->store('profile', 'public');
         $profile->fill($validated);
 
         return BaseResponse::success($profile, 'Data was successfully updated');
