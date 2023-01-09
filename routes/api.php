@@ -31,7 +31,6 @@ Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:
 
 Route::get('/countries', [CountryController::class, 'index']);
 
-Route::prefix('admin')->group(function () {
 Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::get('/show/{id}', [AdminController::class, 'show']);
