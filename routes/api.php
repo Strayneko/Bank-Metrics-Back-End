@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/user/register', [AuthUserContoller::class, 'register']);
-Route::post('/user/login', [AuthUserContoller::class, 'login']);
+Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
 
 
 Route::get('/countries', [CountryController::class, 'index']);
@@ -39,14 +39,16 @@ Route::prefix('admin')->group(function () {
     // Route::post('/delete/{id}', [AdminController::class,'destroy']);
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('/', [UserController::class, 'index']);
-    Route::get('/{id}/show', [UserController::class, 'show']);
-    Route::get('/profile', [UserController::class, 'index_profile']);
-    Route::post('/profile', [UserController::class, 'store_profile']);
-    Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
-    // Route::post('/delete/{id}', [UserController::class,'destroy']);
-});
+Route::prefix('user')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{id}/show', [UserController::class, 'show']);
+        Route::get('/profile', [UserController::class, 'index_profile']);
+        Route::post('/profile', [UserController::class, 'store_profile']);
+        Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
+        // Route::post('/delete/{id}', [UserController::class,'destroy']);
+    });
 
 Route::prefix('bank')->group(function () {
     Route::get('/', [BankController::class, 'index']);
