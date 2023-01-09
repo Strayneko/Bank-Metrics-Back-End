@@ -11,6 +11,7 @@ use App\Models\Bank;
 use App\Models\LoanReason;
 use App\Models\Loan;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
 {
@@ -20,7 +21,6 @@ class LoanController extends Controller
     {
         // validate user input
         $validate = Validator::make($request->all(), [
-            'user_id' => 'required|numeric|min:1',
             'loan_amount' => 'required|numeric|min:1000',
         ]);
 
@@ -28,7 +28,7 @@ class LoanController extends Controller
         if ($validate->fails()) return BaseResponse::error($validate->messages());
 
         // get user profile
-        $user = User::where('id', $request->input('user_id'))->first();
+        $user = Auth::user();
         // check user availability
         if (!$user) return BaseResponse::error('User not found!', 404);
         // check user role
