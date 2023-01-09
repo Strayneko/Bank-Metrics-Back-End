@@ -132,9 +132,10 @@ class LoanController extends Controller
     }
 
 
-    public function list_loan()
+    public function list_loan($user_id)
     {
         $user_id = Auth::user()->id;
+        if ($user_id) $user_id = $user_id;
         $loans = Loan::with(['accepted_bank', 'loan_reason', 'loan_reason.bank',  'accepted_bank.bank' => function ($query) {
             return $query->get('name');
         }])->where('user_id', $user_id)->get();
@@ -145,7 +146,7 @@ class LoanController extends Controller
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $user_id)
     {
 
         // check user access
@@ -155,13 +156,13 @@ class LoanController extends Controller
             return BaseResponse::error($e->getMessage(), 403);
         }
         // get all loan data
-        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank', 'user']);
+        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank', 'user'])->where('user_id', $user_id);
 
         // check if there is type query parameter
         if ($request->query('status')) {
             // show rejected loans
             if ($request->get('status') == 'rejected') $loans = $loans->where('status', 0);
-            // show rejected loans
+            // show accepted loans
             if ($request->get('status') == 'accepted') $loans = $loans->where('status', 1);
         }
         return BaseResponse::success($loans->get());
