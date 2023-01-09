@@ -43,7 +43,7 @@ Route::prefix('user')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('/', [UserController::class, 'index']);
-        Route::get('/{id}/show', [UserController::class, 'show']);
+        Route::get('/me', [UserController::class, 'show']);
         Route::get('/profile', [UserController::class, 'index_profile']);
         Route::post('/profile', [UserController::class, 'store_profile']);
         Route::post('/profile/edit/{id}', [UserController::class, 'update_profile']);
