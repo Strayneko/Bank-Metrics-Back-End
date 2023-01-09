@@ -34,12 +34,12 @@ Route::prefix('auth')
         Route::post('/logout',  'logout')->middleware("auth:sanctum");
     });
 
-Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
-
-
+// list country
 Route::get('/countries', [CountryController::class, 'index']);
 
 // Route::prefix('admin')->group(function () {
+
+
 
 Route::prefix('admin')
     ->middleware(["auth:sanctum", 'isAdmin'])
