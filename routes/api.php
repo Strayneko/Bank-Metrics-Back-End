@@ -64,5 +64,5 @@ Route::prefix('loan')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('/get_loan', 'loan');
-        Route::get('/{user_id}', 'list_loan');
+        Route::get('/list', 'list_loan');
     });
