@@ -32,7 +32,7 @@ class UserController extends Controller
         // get current authenticated user
         $user = Auth::user();
         // get current authenticated user profile
-        $user_profile = UserProfile::where('user_id', $user->id)->first();
+        $user_profile = UserProfile::with(['country'])->where('user_id', $user->id)->first();
         $user['profile'] = null;
         if ($user_profile) $user['profile'] = $user_profile;
         if (!$user) return BaseResponse::error('Data was not found', 404);
