@@ -62,3 +62,6 @@
 1673236455-3579-679427793,1673236454.8179,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,705.09791374207,request
 1673236473-8960-1629066809,1673236473.7756,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,611.6509437561,request
 1673236489-6655-1630303065,1673236489.4754,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,343.55902671814,request
+1673237616-1781-1226026360,1673237616.0619,GET,/api/user,"App\Http\Controllers\UserController@index",200,232.25092887878,request
+1673237627-9772-502843844,1673237627.8447,GET,/api/user,"App\Http\Controllers\UserController@index",200,243.15500259399,request
+1673237638-9273-284629430,1673237638.8154,GET,/api/user,"App\Http\Controllers\UserController@index",200,215.07215499878,request
