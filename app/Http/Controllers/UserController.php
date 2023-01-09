@@ -43,16 +43,17 @@ class UserController extends Controller
     // jangan lupa kasih input type hidden di formnya ya
     function store_profile(Request $request)
     {
+        // get authenticated user
+        $user = Auth::user();
 
         // check if user is inserted theri profile
-        $profile = UserProfile::where('user_id', $request->input('user_id'))->first();
+        $profile = UserProfile::where('user_id', $user->id)->first();
         if ($profile) return BaseResponse::error("You've already submited user profile!");
         try {
 
             $validated = $request->validate([
                 'address' => 'required',
                 'country_id' => 'required|numeric|min:1',
-                'user_id' => 'required',
                 'marital_status' => 'required',
                 'dob' => 'required',
                 'employement' => 'required',
@@ -64,7 +65,7 @@ class UserController extends Controller
 
 
 
-        if ($request->file('photo')) $photo = $request->file('photo')->store('profile', 'public');
+        if ($request->file('photo')) $photo = $request->getSchemeAndHttpHost() . '/' . $request->file('photo')->store('profile', 'public');
         // check if country id is available in database
         $country = Country::find($request->input('country_id'));
         if (!$country) {
@@ -72,13 +73,14 @@ class UserController extends Controller
             $countries = Countries::getCountries();
             $countries = $countries->where('id', $request->input('country_id'))->first();
             // insert country data to countries table
-            $new_country = Country::create([
+            Country::create([
                 'country_name' => $countries['name'],
                 'id' => $countries['id'],
             ]);
         }
         $validated['country_id'] = $request->input('country_id');
         $validated['photo'] = $photo;
+        $validated['user_id'] = $user->id;
         $profile = UserProfile::create($validated);
 
         return BaseResponse::success($profile, 'Data was successfully created');

@@ -53,3 +53,12 @@
 1672988771-8844-256951539,1672988771.739,GET,/api/loan/2,"App\Http\Controllers\LoanController@list_loan",200,302.79493331909,request
 1672988795-1868-926437307,1672988795.0215,GET,/api/loan/2,"App\Http\Controllers\LoanController@list_loan",500,434.34190750122,request
 1672988810-2676-1215532965,1672988810.1397,GET,/api/loan/2,"App\Http\Controllers\LoanController@list_loan",200,299.40700531006,request
+1673235040-4825-914709029,1673235040.4825,,,,,-1673235040482.5,request
+1673235086-4634-1532308908,1673235086.0223,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",500,1751.4588832855,request
+1673235122-6662-45557223,1673235122.4819,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",200,801.32293701172,request
+1673235162-0249-1296328332,1673235161.5901,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",400,605.84688186646,request
+1673235191-2157-1398810293,1673235191.0285,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",200,792.00911521912,request
+1673235261-1042-435382213,1673235260.9822,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",200,350.3110408783,request
+1673236455-3579-679427793,1673236454.8179,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,705.09791374207,request
+1673236473-8960-1629066809,1673236473.7756,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,611.6509437561,request
+1673236489-6655-1630303065,1673236489.4754,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,343.55902671814,request

@@ -139,4 +139,10 @@ class LoanController extends Controller
             'loans' => $loans->makeHidden(['created_at', 'updated_at']),
         ]);
     }
+
+    public function reasons()
+    {
+        // get authenticated user data
+        $user = Auth::user();
+    }
 }

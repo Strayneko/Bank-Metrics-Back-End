@@ -24,12 +24,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/user/register', [AuthUserContoller::class, 'register']);
-Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
+
+// auth grouping
+Route::prefix('auth')
+    ->controller(AuthUserContoller::class)
+    ->group(function () {
+        Route::post('/register',  'register');
+        Route::post('/login',  'login')->name('login');
+    });
+
 Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
 
 
 Route::get('/countries', [CountryController::class, 'index']);
+
 
 Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [AdminController::class, 'index']);
@@ -65,4 +73,5 @@ Route::prefix('loan')
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/list', 'list_loan');
+        Route::get('/reasons', 'reasons');
     });
