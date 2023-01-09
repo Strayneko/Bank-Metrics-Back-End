@@ -28,6 +28,10 @@ Route::post('/user/register', [AuthUserContoller::class, 'register']);
 Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
 Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
 
+
+Route::get('/countries', [CountryController::class, 'index']);
+
+Route::prefix('admin')->group(function () {
 Route::prefix('admin')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::get('/show/{id}', [AdminController::class, 'show']);
