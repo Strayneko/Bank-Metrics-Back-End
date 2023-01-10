@@ -21,7 +21,7 @@ class AuthUserContoller extends Controller
         } catch (\Illuminate\Validation\ValidationException $validate) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->validator->errors()
+                'message' => $validate->validator->errors()->all()
             ], 403);
         }
 
