@@ -58,6 +58,8 @@ class LoanController extends Controller
             if ($bank->marital_status != $user->user_profile->marital_status && $bank->marital_status != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept ' . $marital_statuses[$bank->marital_status] . ' Person!');
             // check age
             if (Carbon::parse($user->user_profile->dob)->age > $bank->max_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person below ' . $bank->max_age . ' years old');
+            // check min age
+            if (Carbon::parse($user->user_profile->dob)->age < $bank->min_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person above ' . $bank->min_age . ' years old');
             // check employment status
             if ($bank->employment != $user->user_profile->employement && $bank->employment != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person who has ' . $employments[$bank->employment] . ' employment');
             // check user nationality
