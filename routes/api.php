@@ -65,7 +65,7 @@ Route::prefix('user')
 Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
     Route::get('/', [BankController::class, 'index']);
     Route::get('/show/{id}', [BankController::class, 'show']);
-    Route::post('/', [BankController::class, 'store']);
+    Route::post('/create', [BankController::class, 'store']);
     Route::post('/edit/{id}', [BankController::class, 'update']);
     // Route::post('/delete/{id}', [BankController::class,'destroy']);
 });
