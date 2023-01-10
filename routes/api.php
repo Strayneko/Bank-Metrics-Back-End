@@ -57,7 +57,7 @@ Route::prefix('user')
         Route::get('/', [UserController::class, 'index']);
         Route::get('/me', [UserController::class, 'show']);
         Route::get('/profile', [UserController::class, 'index_profile']);
-        Route::post('/profile', [UserController::class, 'store_profile']);
+        Route::post('/me', [UserController::class, 'store_profile']);
         Route::post('/profile/edit', [UserController::class, 'update_profile']);
         // Route::post('/delete/{id}', [UserController::class,'destroy']);
     });
