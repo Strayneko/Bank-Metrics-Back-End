@@ -61,7 +61,7 @@ class UserController extends Controller
                 'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error($validate->getMessage());
+            return BaseResponse::error($validate->validator->errors()->all());
         }
 
 
@@ -102,7 +102,7 @@ class UserController extends Controller
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error('Wrong data format');
+            return BaseResponse::error($validate->validator->errors()->all());
         }
 
         $file = $req->file('photo');
