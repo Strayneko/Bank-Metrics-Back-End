@@ -57,10 +57,11 @@ class UserController extends Controller
                 'marital_status' => 'required',
                 'dob' => 'required',
                 'employement' => 'required',
+                'gender' => 'required|digits_between:0,1|numeric',
                 'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error('Wrong data format');
+            return BaseResponse::error($validate->getMessage());
         }
 
 
