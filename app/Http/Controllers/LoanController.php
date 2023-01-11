@@ -26,7 +26,7 @@ class LoanController extends Controller
         ]);
 
         // check validation status
-        if ($validate->fails()) return BaseResponse::error($validate->messages());
+        if ($validate->fails()) return BaseResponse::error($validate->messages()->all());
 
         // get user profile
         $user = Auth::user();

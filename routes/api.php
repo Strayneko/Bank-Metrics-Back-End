@@ -37,7 +37,6 @@ Route::prefix('auth')
 // list country
 Route::get('/countries', [CountryController::class, 'index']);
 
-// Route::prefix('admin')->group(function () {
 
 
 

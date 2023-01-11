@@ -6,6 +6,7 @@ use App\Helpers\Countries;
 use App\Http\Response\BaseResponse;
 use App\Models\Country;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,9 @@ class UserController extends Controller
         // get current authenticated user
         $user = Auth::user();
         // get current authenticated user profile
-        $user_profile = UserProfile::where('user_id', $user->id)->first();
+        $user_profile = UserProfile::with(['country'])->where('user_id', $user->id)->first();
+        $role = Role::where('id', $user->role_id)->first();
+        $user['role'] = $role;
         $user['profile'] = null;
         if ($user_profile) $user['profile'] = $user_profile;
         if (!$user) return BaseResponse::error('Data was not found', 404);
@@ -61,12 +64,12 @@ class UserController extends Controller
                 'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error($validate->getMessage());
+            return BaseResponse::error($validate->validator->errors()->all());
         }
 
 
 
-        if ($request->file('photo')) $photo = $request->getSchemeAndHttpHost() . '/' . $request->file('photo')->store('profile', 'public');
+        if ($request->file('photo')) $photo = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('photo')->store('profile', 'public');
         // check if country id is available in database
         $country = Country::find($request->input('country_id'));
         if (!$country) {
@@ -90,7 +93,7 @@ class UserController extends Controller
     //mengubah profile user
     function edit_profile(Request $req)
     {
-        // get authenticated user 
+        // get authenticated user
         $user = Auth::user();
         $profile = UserProfile::query()->where('id', $user->id)->first();
 
@@ -102,7 +105,7 @@ class UserController extends Controller
                 'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error('Wrong data format');
+            return BaseResponse::error($validate->validator->errors()->all());
         }
 
         $file = $req->file('photo');
@@ -116,6 +119,7 @@ class UserController extends Controller
         Storage::disk('public')->delete($profile->photo);
         $validated['photo'] = $req->file('photo')->store('profile', 'public');
         $profile->fill($validated);
+        $profile->save();
 
         return BaseResponse::success($profile, 'Data was successfully updated');
     }
