@@ -66,7 +66,7 @@ class UserController extends Controller
 
 
 
-        if ($request->file('photo')) $photo = $request->getSchemeAndHttpHost() . '/' . $request->file('photo')->store('profile', 'public');
+        if ($request->file('photo')) $photo = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('photo')->store('profile', 'public');
         // check if country id is available in database
         $country = Country::find($request->input('country_id'));
         if (!$country) {

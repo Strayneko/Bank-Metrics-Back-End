@@ -24,6 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+<<<<<<< HEAD
+=======
+Route::post('/user/register', [AuthUserContoller::class, 'register']);
+Route::post('/user/login', [AuthUserContoller::class, 'login'])->name('login');
+Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
+>>>>>>> 5e56b6e (tes)
 
 // auth grouping
 Route::prefix('auth')
@@ -57,7 +63,11 @@ Route::prefix('user')
         Route::get('/', [UserController::class, 'index']);
         Route::get('/me', [UserController::class, 'show']);
         Route::get('/profile', [UserController::class, 'index_profile']);
+<<<<<<< HEAD
         Route::post('/me', [UserController::class, 'store_profile']);
+=======
+        Route::post('/profile', [UserController::class, 'store_profile']);
+>>>>>>> 5e56b6e (tes)
         Route::post('/profile/edit', [UserController::class, 'update_profile']);
         // Route::post('/delete/{id}', [UserController::class,'destroy']);
     });
