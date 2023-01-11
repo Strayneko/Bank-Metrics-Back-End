@@ -51,11 +51,11 @@ class UserController extends Controller
         $rules = $profile ? [
             'address' => 'min:1',
             'country_id' => 'numeric|min:1',
-            'marital_status' => 'min:1',
+            'marital_status' => 'min:0',
             'dob' => 'date',
-            'employement' => 'min:1|numeric',
-            'gender' => 'min:1|digits_between:0,1|numeric',
-            'photo' => 'min:1|file|image|mimetypes:image/jpg,image/png,image/jpeg'
+            'employement' => 'min:0|numeric',
+            'gender' => 'digits_between:0,1|numeric',
+            'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
         ] : [
             'address' => 'required',
             'country_id' => 'required|numeric|min:1',
