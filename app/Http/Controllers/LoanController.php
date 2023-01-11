@@ -11,6 +11,7 @@ use App\Models\Bank;
 use App\Models\LoanReason;
 use App\Models\Loan;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
@@ -25,7 +26,7 @@ class LoanController extends Controller
         ]);
 
         // check validation status
-        if ($validate->fails()) return BaseResponse::error($validate->messages());
+        if ($validate->fails()) return BaseResponse::error($validate->messages()->all());
 
         // get user profile
         $user = Auth::user();
@@ -57,6 +58,8 @@ class LoanController extends Controller
             if ($bank->marital_status != $user->user_profile->marital_status && $bank->marital_status != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept ' . $marital_statuses[$bank->marital_status] . ' Person!');
             // check age
             if (Carbon::parse($user->user_profile->dob)->age > $bank->max_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person below ' . $bank->max_age . ' years old');
+            // check min age
+            if (Carbon::parse($user->user_profile->dob)->age < $bank->min_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person above ' . $bank->min_age . ' years old');
             // check employment status
             if ($bank->employment != $user->user_profile->employement && $bank->employment != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person who has ' . $employments[$bank->employment] . ' employment');
             // check user nationality
@@ -140,9 +143,25 @@ class LoanController extends Controller
         ]);
     }
 
-    public function reasons()
+    public function index(Request $request)
     {
-        // get authenticated user data
-        $user = Auth::user();
+
+        // check user access
+        try {
+            $this->authorize('admin');
+        } catch (AuthorizationException $e) {
+            return BaseResponse::error($e->getMessage(), 403);
+        }
+        // get all loan data
+        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank', 'user']);
+
+        // check if there is type query parameter
+        if ($request->query('status')) {
+            // show rejected loans
+            if ($request->get('status') == 'rejected') $loans = $loans->where('status', 0);
+            // show rejected loans
+            if ($request->get('status') == 'accepted') $loans = $loans->where('status', 1);
+        }
+        return BaseResponse::success($loans->get());
     }
 }
