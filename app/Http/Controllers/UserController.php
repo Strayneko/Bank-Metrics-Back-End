@@ -17,7 +17,7 @@ class UserController extends Controller
     //untuk mengambil list user
     function index()
     {
-        $user = User::with(['user_profile'])->where('role_id', 1)->get();
+        $user = User::with(['user_profile', 'user_profile.country'])->where('role_id', 1)->get();
         return BaseResponse::success($user);
     }
 
@@ -57,10 +57,11 @@ class UserController extends Controller
                 'marital_status' => 'required',
                 'dob' => 'required',
                 'employement' => 'required',
+                'gender' => 'required|digits_between:0,1|numeric',
                 'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error('Wrong data format');
+            return BaseResponse::error($validate->getMessage());
         }
 
 

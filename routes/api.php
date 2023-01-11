@@ -34,12 +34,12 @@ Route::prefix('auth')
         Route::post('/logout',  'logout')->middleware("auth:sanctum");
     });
 
-Route::get('/countries', [CountryController::class, 'index'])->middleware("auth:sanctum");
-
-
+// list country
 Route::get('/countries', [CountryController::class, 'index']);
 
 // Route::prefix('admin')->group(function () {
+
+
 
 Route::prefix('admin')
     ->middleware(["auth:sanctum", 'isAdmin'])
@@ -57,7 +57,7 @@ Route::prefix('user')
         Route::get('/', [UserController::class, 'index']);
         Route::get('/me', [UserController::class, 'show']);
         Route::get('/profile', [UserController::class, 'index_profile']);
-        Route::post('/profile', [UserController::class, 'store_profile']);
+        Route::post('/me', [UserController::class, 'store_profile']);
         Route::post('/profile/edit', [UserController::class, 'update_profile']);
         // Route::post('/delete/{id}', [UserController::class,'destroy']);
     });
@@ -77,5 +77,5 @@ Route::prefix('loan')
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/list', 'list_loan');
-        Route::get('/reasons', 'reasons');
+        Route::get('/all', 'index');
     });
