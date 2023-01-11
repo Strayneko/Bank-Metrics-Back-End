@@ -6,6 +6,7 @@ use App\Helpers\Countries;
 use App\Http\Response\BaseResponse;
 use App\Models\Country;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,6 +34,8 @@ class UserController extends Controller
         $user = Auth::user();
         // get current authenticated user profile
         $user_profile = UserProfile::where('user_id', $user->id)->first();
+        $role = Role::where('id', $user->role_id)->first();
+        $user['role'] = $role;
         $user['profile'] = null;
         if ($user_profile) $user['profile'] = $user_profile;
         if (!$user) return BaseResponse::error('Data was not found', 404);
