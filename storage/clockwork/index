@@ -88,3 +88,20 @@
 1673239568-1269-1030933451,1673239567.9416,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",404,406.39901161194,request
 1673239585-0705-1725354412,1673239584.9549,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",200,289.35289382935,request
 >>>>>>> rendi
+1673418005-3934-460132243,1673418005.0354,POST,/api/auth/register,"App\Http\Controllers\AuthUserContoller@register",201,3324.1701126099,request
+1673418014-2366-1543981833,1673418014.0945,POST,/api/auth/register,"App\Http\Controllers\AuthUserContoller@register",403,358.31904411316,request
+1673418038-9224-242795633,1673418038.8608,POST,/api/auth/login,"App\Http\Controllers\AuthUserContoller@login",401,434.20815467834,request
+1673418052-8037-2081519963,1673418052.7366,POST,/api/auth/login,"App\Http\Controllers\AuthUserContoller@login",200,371.96803092957,request
+1673418087-2761-995284732,1673418087.2154,GET,/api/me,,404,372.04599380493,request
+1673418094-5923-1296070633,1673418094.5287,GET,/api/user/me,"App\Http\Controllers\UserController@show",200,284.75713729858,request
+1673418126-1806-1081748668,1673418126.0487,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",400,358.89601707458,request
+1673418157-9995-322815446,1673418157.9377,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",400,204.31995391846,request
+1673418243-6030-42423879,1673418243.431,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",400,473.81210327148,request
+1673418248-1575-542859145,1673418248.0133,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,579.55193519592,request
+1673418292-6374-1636614513,1673418292.5842,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",200,136.13200187683,request
+1673418303-0898-986352316,1673418303.0363,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",200,233.85405540466,request
+1673418505-7707-249040718,1673418505.6247,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,465.37208557129,request
+1673418515-0017-274981922,1673418514.8589,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",500,1786.8411540985,request
+1673418556-9521-1922052344,1673418556.8848,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,244.60601806641,request
+1673418564-7592-587547679,1673418564.6452,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,278.97906303406,request
+1673418566-2650-1548455741,1673418566.2547,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,110.79502105713,request
