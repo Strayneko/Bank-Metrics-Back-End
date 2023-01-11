@@ -105,7 +105,7 @@ class UserController extends Controller
 
             // delete profile image
             $imgName = Str::of($profile->photo)->remove($request->getSchemeAndHttpHost() . '/storage/');
-            Storage::disk('public')->delete($imgName);
+            if ($request->file('photo')) Storage::disk('public')->delete($imgName);
             // update user profile
             $profile->update($validated);
             return BaseResponse::success($profile, 'Data was successfully Updated');
