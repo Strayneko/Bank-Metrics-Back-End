@@ -119,7 +119,8 @@ class UserController extends Controller
         Storage::disk('public')->delete($profile->photo);
         $validated['photo'] = $req->file('photo')->store('profile', 'public');
         $profile->fill($validated);
-
+        $profile->save();
+        
         return BaseResponse::success($profile, 'Data was successfully updated');
     }
 }
