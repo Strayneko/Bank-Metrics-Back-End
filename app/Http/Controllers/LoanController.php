@@ -26,7 +26,7 @@ class LoanController extends Controller
         ]);
 
         // check validation status
-        if ($validate->fails()) return BaseResponse::error($validate->messages());
+        if ($validate->fails()) return BaseResponse::error($validate->messages()->all());
 
         // get user profile
         $user = Auth::user();
@@ -139,7 +139,7 @@ class LoanController extends Controller
         // check loan data
         if (count($loans) == 0) return BaseResponse::error('No loan data found for userid = ' . $user_id, 404);
         return BaseResponse::success(data: [
-            'loans' => $loans->makeHidden(['created_at', 'updated_at']),
+            'loans' => $loans
         ]);
     }
 
@@ -170,14 +170,20 @@ class LoanController extends Controller
         // check loan by current user login
         $loan = Loan::where('user_id', Auth::user()->id)->where('id', $loan_id)->get();
         if (count($loan) == 0) return BaseResponse::error('No loan data found!');
+
+        // get rejection rason by loan id
         $rejection_reasons = LoanReason::where('loan_id', $loan_id)->get();
+        // check rejection reason availability
         if (count($rejection_reasons) == 0) return BaseResponse::error('No Loan Reason data found!');
         $data = [];
         $banks = Bank::all();
         foreach ($rejection_reasons as $reason) {
+            // filter bank data 
             $bank = $banks->filter(fn ($bank) => $reason->bank_id == $bank->id)->first();
             $temp = [];
+            // filter rejection reason
             $reasons = $rejection_reasons->filter(fn ($r) => $r->bank_id == $reason->bank_id);
+            // loop reasons and push it into temporary array vairable
             foreach ($reasons as $reason) {
                 array_push($temp, $reason->rejection_reason);
             }
