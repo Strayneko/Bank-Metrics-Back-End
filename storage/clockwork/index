@@ -106,7 +106,13 @@
 1673489710-1939-929639652,1673489710.1337,POST,/api/auth/login,"App\Http\Controllers\AuthUserContoller@login",200,1415.7710075378,request
 1673489725-1806-430894490,1673489724.975,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,583.49609375,request
 1673489767-1728-169354854,1673489766.9953,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,490.99707603455,request
+<<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> rendi
+=======
+=======
+>>>>>>> rendi
+>>>>>>> Bayu
 1673490244-1572-888781908,1673490243.8769,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,808.14409255981,request
 1673490267-9742-1307640628,1673490267.6912,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,714.17784690857,request
 1673490681-8232-354896510,1673490681.489,GET,/api/loan/rejection_reason/1,"App\Http\Controllers\LoanController@rejection_reason",200,867.46788024902,request
@@ -137,4 +143,11 @@
 1673492031-0083-355521498,1673492030.725,GET,/api/loan/rejection_reason/11,"App\Http\Controllers\LoanController@rejection_reason",200,711.1508846283,request
 1673492057-4228-1319109897,1673492057.3178,GET,/api/loan/rejection_reason/11,"App\Http\Controllers\LoanController@rejection_reason",400,381.85715675354,request
 1673492064-0711-1092224187,1673492063.8937,GET,/api/loan/rejection_reason/1,"App\Http\Controllers\LoanController@rejection_reason",200,464.55407142639,request
+<<<<<<< HEAD
 >>>>>>>>> Temporary merge branch 2
+=======
+<<<<<<< HEAD
+>>>>>>> rendi
+=======
+>>>>>>> Bayu
+>>>>>>> ea9b56bd47cb1eef53d81f4d635c0b0f0d0f96bf
