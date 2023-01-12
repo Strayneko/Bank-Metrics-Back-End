@@ -173,9 +173,15 @@ class LoanController extends Controller
         $rejection_reasons = LoanReason::where('loan_id', $loan_id)->get();
         if (count($rejection_reasons) == 0) return BaseResponse::error('No Loan Reason data found!');
         $data = [];
-        $banks = Bank::with('loan_reason')->get();
+        $banks = Bank::all();
         foreach ($rejection_reasons as $reason) {
             $bank = $banks->filter(fn ($bank) => $reason->bank_id == $bank->id)->first();
+            $temp = [];
+            $reasons = $rejection_reasons->filter(fn ($r) => $r->bank_id == $reason->bank_id);
+            foreach ($reasons as $reason) {
+                array_push($temp, $reason->rejection_reason);
+            }
+            $bank['loan_reason'] = $temp;
             $data[$bank->id] = $bank;
         }
 
