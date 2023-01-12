@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 class LoanController extends Controller
 {
 
+
+
     // TODO: 
     public function loan(Request $request)
     {
