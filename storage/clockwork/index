@@ -101,20 +101,12 @@
 1673418556-9521-1922052344,1673418556.8848,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,244.60601806641,request
 1673418564-7592-587547679,1673418564.6452,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,278.97906303406,request
 1673418566-2650-1548455741,1673418566.2547,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,110.79502105713,request
-<<<<<<< HEAD
-1673419469-9918-1839144414,1673419469.8273,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",500,710.48903465271,request
-1673419646-4474-2136968501,1673419645.9778,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",500,1960.7598781586,request
-1673420179-6340-394781830,1673420179.2077,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",500,2053.4009933472,request
-1673420211-8917-2011590052,1673420211.4707,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",500,1674.0992069244,request
-1673420266-2719-84763603,1673420266.0432,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,952.83484458923,request
-1673420284-3721-1710668882,1673420283.8062,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,1475.2609729767,request
-1673420293-3510-639324705,1673420292.8211,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,1540.7071113586,request
-=======
 1673489676-7406-446413910,1673489676.3183,GET,/api/loan/loan_list,,404,1872.7300167084,request
 1673489693-9279-982312219,1673489693.8666,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,376.23190879822,request
 1673489710-1939-929639652,1673489710.1337,POST,/api/auth/login,"App\Http\Controllers\AuthUserContoller@login",200,1415.7710075378,request
 1673489725-1806-430894490,1673489724.975,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,583.49609375,request
 1673489767-1728-169354854,1673489766.9953,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,490.99707603455,request
+>>>>>>> rendi
 1673490244-1572-888781908,1673490243.8769,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,808.14409255981,request
 1673490267-9742-1307640628,1673490267.6912,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,714.17784690857,request
 1673490681-8232-354896510,1673490681.489,GET,/api/loan/rejection_reason/1,"App\Http\Controllers\LoanController@rejection_reason",200,867.46788024902,request
@@ -145,3 +137,4 @@
 1673492031-0083-355521498,1673492030.725,GET,/api/loan/rejection_reason/11,"App\Http\Controllers\LoanController@rejection_reason",200,711.1508846283,request
 1673492057-4228-1319109897,1673492057.3178,GET,/api/loan/rejection_reason/11,"App\Http\Controllers\LoanController@rejection_reason",400,381.85715675354,request
 1673492064-0711-1092224187,1673492063.8937,GET,/api/loan/rejection_reason/1,"App\Http\Controllers\LoanController@rejection_reason",200,464.55407142639,request
+>>>>>>>>> Temporary merge branch 2

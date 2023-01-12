@@ -139,7 +139,7 @@ class LoanController extends Controller
         // check loan data
         if (count($loans) == 0) return BaseResponse::error('No loan data found for userid = ' . $user_id, 404);
         return BaseResponse::success(data: [
-            'loans' => $loans->makeHidden(['created_at', 'updated_at']),
+            'loans' => $loans
         ]);
     }
 
