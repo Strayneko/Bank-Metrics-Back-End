@@ -168,7 +168,7 @@ class LoanController extends Controller
     public function rejection_reason($loan_id)
     {
         // check loan by current user login
-        $loan = Loan::where('user_id', Auth::user()->id)->get();
+        $loan = Loan::where('user_id', Auth::user()->id)->where('id', $loan_id)->get();
         if (count($loan) == 0) return BaseResponse::error('No loan data found!');
         $rejection_reasons = LoanReason::where('loan_id', $loan_id)->get();
         if (count($rejection_reasons) == 0) return BaseResponse::error('No Loan Reason data found!');
