@@ -133,7 +133,7 @@ class LoanController extends Controller
     public function list_loan()
     {
         $user_id = Auth::user()->id;
-        $loans = Loan::with(['accepted_bank', 'loan_reason',  'accepted_bank.bank' => function ($query) {
+        $loans = Loan::with(['accepted_bank', 'loan_reason', 'loan_reason.bank',  'accepted_bank.bank' => function ($query) {
             return $query->get('name');
         }])->where('user_id', $user_id)->get();
         // check loan data
@@ -163,5 +163,19 @@ class LoanController extends Controller
             if ($request->get('status') == 'accepted') $loans = $loans->where('status', 1);
         }
         return BaseResponse::success($loans->get());
+    }
+
+    public function rejection_reason($loan_id)
+    {
+        $rejection_reasons = LoanReason::where('loan_id', $loan_id)->get();
+        if (count($rejection_reasons) == 0) return BaseResponse::error('No Loan Reason data found!');
+        $data = [];
+        $banks = Bank::with('loan_reason')->get();
+        foreach ($rejection_reasons as $reason) {
+            $bank = $banks->filter(fn ($bank) => $reason->bank_id == $bank->id)->first();
+            $data[$bank->id] = $bank;
+        }
+
+        return BaseResponse::success($data);
     }
 }
