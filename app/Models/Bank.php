@@ -20,4 +20,9 @@ class Bank extends Model
     {
         return $this->hasMany(AcceptedBank::class, 'bank_id');
     }
+
+    public function loan_reason()
+    {
+        return $this->hasMany(LoanReason::class, 'bank_id');
+    }
 }
