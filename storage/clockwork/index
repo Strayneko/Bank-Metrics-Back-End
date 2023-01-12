@@ -105,3 +105,8 @@
 1673418556-9521-1922052344,1673418556.8848,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,244.60601806641,request
 1673418564-7592-587547679,1673418564.6452,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,278.97906303406,request
 1673418566-2650-1548455741,1673418566.2547,POST,/api/user/me,"App\Http\Controllers\UserController@store_profile",200,110.79502105713,request
+1673489676-7406-446413910,1673489676.3183,GET,/api/loan/loan_list,,404,1872.7300167084,request
+1673489693-9279-982312219,1673489693.8666,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,376.23190879822,request
+1673489710-1939-929639652,1673489710.1337,POST,/api/auth/login,"App\Http\Controllers\AuthUserContoller@login",200,1415.7710075378,request
+1673489725-1806-430894490,1673489724.975,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,583.49609375,request
+1673489767-1728-169354854,1673489766.9953,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",200,490.99707603455,request
