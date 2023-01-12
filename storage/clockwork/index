@@ -74,9 +74,6 @@
 1673238803-2549-1357792461,1673238802.7618,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",400,715.73901176453,request
 1673238937-7446-1667945801,1673238937.6247,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",500,821.4099407196,request
 1673238968-5992-739471718,1673238968.4832,POST,/api/user/profile,"App\Http\Controllers\UserController@store_profile",200,311.91110610962,request
-<<<<<<< HEAD
-1673238997-4588-874703795,1673238997.3452,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",500,530.31301498413,request
-=======
 1673238997-4588-874703795,1673238997.3452,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",500,530.31301498413,request
 1673239133-6913-1002350635,1673239133.5099,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",200,451.52115821838,request
 1673239151-8405-1898830492,1673239151.6629,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",500,925.36401748657,request
@@ -87,7 +84,6 @@
 1673239531-0245-2066251915,1673239530.9118,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",200,305.21512031555,request
 1673239568-1269-1030933451,1673239567.9416,GET,/api/loan/list,"App\Http\Controllers\LoanController@list_loan",404,406.39901161194,request
 1673239585-0705-1725354412,1673239584.9549,POST,/api/loan/get_loan,"App\Http\Controllers\LoanController@loan",200,289.35289382935,request
->>>>>>> rendi
 1673418005-3934-460132243,1673418005.0354,POST,/api/auth/register,"App\Http\Controllers\AuthUserContoller@register",201,3324.1701126099,request
 1673418014-2366-1543981833,1673418014.0945,POST,/api/auth/register,"App\Http\Controllers\AuthUserContoller@register",403,358.31904411316,request
 1673418038-9224-242795633,1673418038.8608,POST,/api/auth/login,"App\Http\Controllers\AuthUserContoller@login",401,434.20815467834,request

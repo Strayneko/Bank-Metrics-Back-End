@@ -11,10 +11,10 @@ class Loan extends Model
 
     protected $guarded = ['id'];
 
-    protected $hidden = [
-        // 'created_at',
-        // 'updated_at',
-    ];
+    // protected $hidden = [
+    //     // 'created_at',
+    //     // 'updated_at',
+    // ];
 
     // relation to users table
     public function user()
