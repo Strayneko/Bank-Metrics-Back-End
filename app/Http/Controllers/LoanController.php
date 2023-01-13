@@ -196,9 +196,8 @@ class LoanController extends Controller
                 array_push($temp, $reason->rejection_reason);
             }
             $bank['loan_reason'] = $temp;
-            $data[$bank->id] = $bank;
+            array_push($data, $bank);
         }
-
         return BaseResponse::success($data);
     }
 }
