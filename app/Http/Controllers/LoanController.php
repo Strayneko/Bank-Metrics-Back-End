@@ -94,24 +94,33 @@ class LoanController extends Controller
         $accepted_banks = $reasons->filter(function ($reason) {
             if (count($reason['reasons']) == 0) return $reason;
         });
-        // insert loan data
-        $loan = Loan::create(
-            [
-                'user_id' => $user->id,
-                'loan_amount' => $request->input('loan_amount'),
-                'status' => 0,
-            ]
-        );
+
 
         // if no bank accept
         if (count($accepted_banks) == 0) {
 
+            // insert loan data
+            $loan = Loan::create(
+                [
+                    'user_id' => $user->id,
+                    'loan_amount' => $request->input('loan_amount'),
+                    'status' => 0,
+                ]
+            );
             // get rejection reason
             $rejection_reasons = $this->getRejectionReason($reasons, $loan->id);
             // insert loan reasons
             LoanReason::insert($rejection_reasons);
             return BaseResponse::success(data: ['reasons' => $rejection_reasons], message: 'Your loan has been rejected!');
         } else {
+            // insert loan data
+            $loan = Loan::create(
+                [
+                    'user_id' => $user->id,
+                    'loan_amount' => $request->input('loan_amount'),
+                    'status' => 0,
+                ]
+            );
             // if there is bank accepted the loaning
             // filter banks to accepted banks only
             // if there is 2 banks or more that accept the loan
@@ -183,7 +192,7 @@ class LoanController extends Controller
         $rejection_reasons = LoanReason::where('loan_id', $loan_id)->get();
         // check rejection reason availability
         if (count($rejection_reasons) == 0) return BaseResponse::error('No Loan Reason data found!');
-        $data = [];
+        $data = collect([]);
         $banks = Bank::all();
         foreach ($rejection_reasons as $reason) {
             // filter bank data 
@@ -196,7 +205,7 @@ class LoanController extends Controller
                 array_push($temp, $reason->rejection_reason);
             }
             $bank['loan_reason'] = $temp;
-            array_push($data, $bank);
+            if (!$data->where('id', $bank->id)->first()) $data->push($bank);
         }
         return BaseResponse::success($data);
     }
