@@ -27,16 +27,16 @@ class BankController extends Controller
         try {
             $validated = $request->validate([
 
-                'name' => ['required'],
-                'loaning_percentage' => ['required'],
-                'max_age' => ['required'],
-                'min_age' => ['required'],
-                'marital_status' => ['required'],
-                'nationality' => ['required'],
-                'employment' => ['required'],
+                'name' => ['required', 'max:50', 'min:3'],
+                'loaning_percentage' => ['required', 'numeric', 'min:1', '100'],
+                'max_age' => ['required', 'min:1', 'max:150',  'numeric'],
+                'min_age' => ['required', 'min:1', 'max:150'],
+                'marital_status' => ['required', 'numeric', 'digits_between:0,1'],
+                'nationality' => ['required', 'numeric', 'min:1'],
+                'employment' => ['required', 'numeric', 'digits_between:0,1'],
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error('Wrong data format');
+            return BaseResponse::error($validate->validator->errors()->all());
         }
 
         $bank = Bank::create($validated);
@@ -51,17 +51,16 @@ class BankController extends Controller
         if (!$bank) BaseResponse::error('Data was not found', 404);
         try {
             $validated = $request->validate([
-
-                'name' => ['required'],
-                'loaning_percentage' => ['required'],
-                'max_age' => ['required'],
-                'min_age' => ['required'],
-                'marital_status' => ['required'],
-                'nationality' => ['required'],
-                'employment' => ['required'],
+                'name' => ['required', 'max:50', 'min:3'],
+                'loaning_percentage' => ['required', 'numeric', 'min:1', '100'],
+                'max_age' => ['required', 'min:1', 'max:150',  'numeric'],
+                'min_age' => ['required', 'min:1', 'max:150'],
+                'marital_status' => ['required', 'numeric', 'digits_between:0,1'],
+                'nationality' => ['required', 'numeric', 'min:1'],
+                'employment' => ['required', 'numeric', 'digits_between:0,1'],
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
-            return BaseResponse::error('Wrong data format');
+            return BaseResponse::error($validate->validator->errors()->all());
         }
 
         $bank->fill($validated);
