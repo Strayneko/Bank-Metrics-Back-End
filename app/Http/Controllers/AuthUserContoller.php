@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Response\BaseResponse;
 use App\Models\User;
+use App\Models\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class AuthUserContoller extends Controller
 {
