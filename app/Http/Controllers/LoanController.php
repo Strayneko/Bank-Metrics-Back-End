@@ -18,6 +18,28 @@ class LoanController extends Controller
 {
 
 
+    private function getRejectionReason($reasons, $loan_id)
+    {
+        // filter banks to rejected banks only
+        $rejected_banks = $reasons->filter(function ($reason) {
+            if (count($reason['reasons']) > 0) return $reason;
+        });
+
+        // collecting reasons into array
+        $rejection_reasons = [];
+        foreach ($rejected_banks as $rejected_bank) {
+            foreach ($rejected_bank['reasons'] as $reason) {
+                array_push($rejection_reasons, [
+                    'loan_id' => $loan_id,
+                    'bank_id' => $rejected_bank['bank_id'],
+                    'rejection_reason' => $reason,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+        return $rejection_reasons;
+    }
 
     // TODO: 
     public function loan(Request $request)
@@ -72,47 +94,25 @@ class LoanController extends Controller
         $accepted_banks = $reasons->filter(function ($reason) {
             if (count($reason['reasons']) == 0) return $reason;
         });
+        // insert loan data
+        $loan = Loan::create(
+            [
+                'user_id' => $user->id,
+                'loan_amount' => $request->input('loan_amount'),
+                'status' => 0,
+            ]
+        );
 
         // if no bank accept
         if (count($accepted_banks) == 0) {
-            // filter banks to rejected banks only
-            $rejected_banks = $reasons->filter(function ($reason) {
-                if (count($reason['reasons']) > 0) return $reason;
-            });
-            // insert loan data
-            $loan = Loan::create(
-                [
-                    'user_id' => $user->id,
-                    'loan_amount' => $request->input('loan_amount'),
-                    'status' => 0,
-                ]
-            );
-            // collecting reasons into array
-            $rejection_reasons = [];
-            foreach ($rejected_banks as $rejected_bank) {
-                foreach ($rejected_bank['reasons'] as $reason) {
-                    array_push($rejection_reasons, [
-                        'loan_id' => $loan->id,
-                        'bank_id' => $rejected_bank['bank_id'],
-                        'rejection_reason' => $reason,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-                }
-            }
+
+            // get rejection reason
+            $rejection_reasons = $this->getRejectionReason($reasons, $loan->id);
             // insert loan reasons
             LoanReason::insert($rejection_reasons);
             return BaseResponse::success(data: ['reasons' => $rejection_reasons], message: 'Your loan has been rejected!');
         } else {
             // if there is bank accepted the loaning
-            // insert loan data
-            $loan = Loan::create(
-                [
-                    'user_id' => $user->id,
-                    'loan_amount' => $request->input('loan_amount'),
-                    'status' => 1,
-                ]
-            );
             // filter banks to accepted banks only
             // if there is 2 banks or more that accept the loan
             // insert all data
@@ -126,6 +126,10 @@ class LoanController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+            // get rejection reason
+            $rejection_reasons = $this->getRejectionReason($reasons, $loan->id);
+            // insert loan reasons
+            LoanReason::insert($rejection_reasons);
             AcceptedBank::insert($accepted);
             return BaseResponse::success(['loan' => $loan, 'banks' => $accepted], 'Your loan has been accepted!');
         }
