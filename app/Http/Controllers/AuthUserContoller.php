@@ -19,8 +19,8 @@ class AuthUserContoller extends Controller
     {
         try {
             $rq->validate([
-                'name' => ['required'],
-                'email' => ['required', 'unique:users,email', 'email'],
+                'name' => ['required', 'min:5', 'max:50'],
+                'email' => ['required', 'unique:users,email', 'email', 'max:50', 'min:3'],
                 'password' => ['required', 'min:8']
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {

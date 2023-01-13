@@ -27,8 +27,8 @@ class AdminController extends Controller
         try {
             $validated = $request->validate([
 
-                'name' => ['required'],
-                'email' => ['required', 'unique:users,email'],
+                'name' => ['required', 'min:5', 'max:50'],
+                'email' => ['required', 'unique:users,email', 'email', 'min:3', 'max:50'],
                 'password' => ['required', 'min:8']
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {
@@ -48,8 +48,8 @@ class AdminController extends Controller
         try {
             $validated = $request->validate([
 
-                'name' => ['required'],
-                'email' => ['required', 'unique:users,email'],
+                'name' => ['required', 'min:5', 'max:50'],
+                'email' => ['required', 'unique:users,email', 'email', 'min:3', 'max:50'],
                 'password' => ['required', 'min:8']
             ]);
         } catch (\Illuminate\Validation\ValidationException $validate) {

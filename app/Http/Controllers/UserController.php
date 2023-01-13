@@ -19,7 +19,7 @@ class UserController extends Controller
     //untuk mengambil list user
     function index()
     {
-        $user = User::with(['user_profile', 'user_profile.country'])->where('role_id', 1)->get();
+        $user = User::with(['user_profile', 'user_profile.country'])->where('role_id', 1)->latest()->get();
         return BaseResponse::success($user);
     }
 
@@ -59,7 +59,7 @@ class UserController extends Controller
             'dob' => 'date',
             'employement' => 'min:0|numeric',
             'gender' => 'digits_between:0,1|numeric',
-            'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg'
+            'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
         ] : [
             'address' => 'required',
             'country_id' => 'required|numeric|min:1',
@@ -67,7 +67,7 @@ class UserController extends Controller
             'dob' => 'required',
             'employement' => 'required',
             'gender' => 'required|digits_between:0,1|numeric',
-            'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg'
+            'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
         ];
         try {
 
