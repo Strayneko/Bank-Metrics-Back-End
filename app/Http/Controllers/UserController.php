@@ -19,7 +19,7 @@ class UserController extends Controller
     //untuk mengambil list user
     function index()
     {
-        $user = User::with(['user_profile', 'user_profile.country'])->where('role_id', 1)->get();
+        $user = User::with(['user_profile', 'user_profile.country'])->where('role_id', 1)->latest()->get();
         return BaseResponse::success($user);
     }
 
