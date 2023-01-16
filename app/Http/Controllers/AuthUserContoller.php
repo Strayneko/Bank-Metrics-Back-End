@@ -17,12 +17,14 @@ class AuthUserContoller extends Controller
 {
     public function register(Request $rq)
     {
+        // validating form data (request)
         try {
             $rq->validate([
                 'name' => ['required', 'min:5', 'max:50'],
                 'email' => ['required', 'unique:users,email', 'email', 'max:50', 'min:3'],
                 'password' => ['required', 'min:8']
             ]);
+            // return error based on validation error
         } catch (\Illuminate\Validation\ValidationException $validate) {
             return response()->json([
                 'status' => false,
@@ -30,6 +32,7 @@ class AuthUserContoller extends Controller
             ], 403);
         }
 
+        // create new user
         $payload = $rq->all();
         $payload['role_id'] = 1;
         $register = User::create($payload);
@@ -66,6 +69,7 @@ class AuthUserContoller extends Controller
 
     public function logout(Request $request)
     {
+        // delete logouted user's token on personal access token table
         $request->user()->currentAccessToken()->delete();
         return BaseResponse::success(null, 'Logout Success');
     }
