@@ -24,6 +24,7 @@ class AuthUserContoller extends Controller
                 'email' => ['required', 'unique:users,email', 'email', 'max:50', 'min:3'],
                 'password' => ['required', 'min:8']
             ]);
+            // return error based on validation error
         } catch (\Illuminate\Validation\ValidationException $validate) {
             return response()->json([
                 'status' => false,

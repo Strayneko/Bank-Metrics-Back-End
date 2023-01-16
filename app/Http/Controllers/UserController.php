@@ -43,14 +43,13 @@ class UserController extends Controller
         return BaseResponse::success($user);
     }
 
-    //menambahkan profile user
-    // jangan lupa kasih input type hidden di formnya ya
+    
     function store_profile(Request $request)
     {
         // get authenticated user
         $user = Auth::user();
 
-        // check if user is inserted theri profile
+        // check if user is inserted their profile
         $profile = UserProfile::where('user_id', $user->id)->first();
         $rules = $profile ? [
             'address' => 'min:1',
