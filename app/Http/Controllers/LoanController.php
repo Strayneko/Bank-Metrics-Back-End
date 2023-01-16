@@ -29,6 +29,7 @@ class LoanController extends Controller
         $rejection_reasons = [];
         foreach ($rejected_banks as $rejected_bank) {
             foreach ($rejected_bank['reasons'] as $reason) {
+                // push data to rejection_reasons array
                 array_push($rejection_reasons, [
                     'loan_id' => $loan_id,
                     'bank_id' => $rejected_bank['bank_id'],
@@ -41,7 +42,7 @@ class LoanController extends Controller
         return $rejection_reasons;
     }
 
-    // TODO: 
+    // TODO: handle loan submission
     public function loan(Request $request)
     {
         // validate user input
@@ -90,7 +91,7 @@ class LoanController extends Controller
             if ($bank->nationality == 0 && strtolower($user->user_profile->country->country_name) != 'indonesia') $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen');
         }
 
-
+        // filter banks to accepted banks only
         $accepted_banks = $reasons->filter(function ($reason) {
             if (count($reason['reasons']) == 0) return $reason;
         });
@@ -144,15 +145,17 @@ class LoanController extends Controller
         }
     }
 
-
+    // TODO: show all loan data
     public function list_loan(Request $request)
     {
+        // get current user login id
         $user_id = Auth::user()->id;
+        // check if there is query user_id passed
+        // replace user_id with value from query
         if ($request->query('user_id')) $user_id = $request->query('user_id');
 
-        $loans = Loan::with(['accepted_bank', 'loan_reason', 'loan_reason.bank',  'accepted_bank.bank' => function ($query) {
-            return $query->get('name');
-        }])->where('user_id', $user_id)->get();
+        // get loan data with accepted_bank, loan_reason, and bank data
+        $loans = Loan::with(['accepted_bank', 'loan_reason', 'loan_reason.bank',  'accepted_bank.bank'])->where('user_id', $user_id)->get();
         // check loan data
         if (count($loans) == 0) return BaseResponse::error('No loan data found for userid = ' . $user_id, 404);
         return BaseResponse::success(data: [
