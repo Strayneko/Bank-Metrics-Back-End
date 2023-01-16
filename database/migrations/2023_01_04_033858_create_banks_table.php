@@ -31,6 +31,7 @@ return new class extends Migration
             // 1. full-time
             // 2. both
             $table->tinyInteger('employment');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

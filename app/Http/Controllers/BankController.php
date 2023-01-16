@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Response\BaseResponse;
 use App\Models\Bank;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BankController extends Controller
 {
@@ -47,22 +45,21 @@ class BankController extends Controller
         return BaseResponse::success($bank, 'Data was successfully created');
     }
 
-    function update(Request $request)
+    function update(Request $request, $id)
     {
-        // get authenticated user
-        $user = Auth::user();
-        $bank = Bank::query()->where('id', $user->id)->first();
+
+        $bank = Bank::query()->where('id', $id)->first();
         if (!$bank) BaseResponse::error('Data was not found', 404);
         // validating request (form data)
         try {
             $validated = $request->validate([
-                'name' => ['required', 'max:50', 'min:3'],
-                'loaning_percentage' => ['required', 'numeric', 'min:1', '100'],
-                'max_age' => ['required', 'min:1', 'max:150',  'numeric'],
-                'min_age' => ['required', 'min:1', 'max:150'],
-                'marital_status' => ['required', 'numeric', 'digits_between:0,1'],
-                'nationality' => ['required', 'numeric', 'min:1'],
-                'employment' => ['required', 'numeric', 'digits_between:0,1'],
+                'name' => [ 'max:50', 'min:3'],
+                'loaning_percentage' => [ 'numeric', 'min:1', '100'],
+                'max_age' => [ 'min:1', 'max:150',  'numeric'],
+                'min_age' => [ 'min:1', 'max:150'],
+                'marital_status' => [ 'numeric', 'digits_between:0,1'],
+                'nationality' => [ 'numeric', 'min:1'],
+                'employment' => [ 'numeric', 'digits_between:0,1'],
             ]);
             // return error based on validation error
         } catch (\Illuminate\Validation\ValidationException $validate) {
@@ -70,6 +67,7 @@ class BankController extends Controller
         }
         
         $bank->fill($validated);
+        $bank->save();
         return BaseResponse::success($bank, 'Data was successfully updated');
     }
 
