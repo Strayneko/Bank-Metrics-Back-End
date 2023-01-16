@@ -17,7 +17,7 @@ class AuthUserContoller extends Controller
 {
     public function register(Request $rq)
     {
-        // validating form data (request)
+        //validate user input register
         try {
             $rq->validate([
                 'name' => ['required', 'min:5', 'max:50'],
@@ -32,9 +32,11 @@ class AuthUserContoller extends Controller
             ], 403);
         }
 
-        // create new user
+        //payload request all register
         $payload = $rq->all();
+        // set default role id for user
         $payload['role_id'] = 1;
+        //create all input register user
         $register = User::create($payload);
         return response()->json([
             'status' => true,
@@ -69,7 +71,7 @@ class AuthUserContoller extends Controller
 
     public function logout(Request $request)
     {
-        // delete logouted user's token on personal access token table
+        //to delete token after user logout
         $request->user()->currentAccessToken()->delete();
         return BaseResponse::success(null, 'Logout Success');
     }
