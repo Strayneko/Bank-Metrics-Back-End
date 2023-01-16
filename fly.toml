@@ -23,6 +23,9 @@ processes = []
   DB_USERNAME="postgres"
   DB_PASSWORD="TMDoUEfIk7m7wKf"
 
+[deploy]
+  release_command = "php /var/www/html/artisan storage:link"
+
 [experimental]
   auto_rollback = true
 
