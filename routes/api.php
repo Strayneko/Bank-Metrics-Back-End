@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthUserContoller;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\PasswordResets;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,8 @@ Route::prefix('auth')
 Route::get('/countries', [CountryController::class, 'index']);
 
 
-
+Route::post('/passwordReset', [PasswordResets::class, 'password_reset']);
+Route::post('/resetPassword/{token}', [PasswordResets::class, 'reset']);
 
 Route::prefix('admin')
     ->middleware(["auth:sanctum", 'isAdmin'])
