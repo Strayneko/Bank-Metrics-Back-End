@@ -17,51 +17,64 @@ use Illuminate\Support\Str;
 class PasswordResets extends Controller
 {
     public function password_reset(Request $request){
+        //validate user input
         $request->validate([
             'email' => 'required|email',
         ]);
 
+        //to save req email in variable email
         $email = $request->email;
 
+        //to get data email from table User
         $user = User::where('email', $email)->first();
+        //to check whether the email exists or not
         if(!$user){
             return BaseResponse::error('Email Does Not Exist', 404);
         }
 
+        //to create token
         $token = Str::random(40);
 
+        //to add data to table PasswordReset
         PasswordReset::create([
             'email' => $request->email,
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
 
-        dump("http://127.0.0.1:8000/api/reset/user/" . $token);
+        // dump("http://127.0.0.1:8000/api/reset/user/" . $token);
 
-        Mail::send('emails.index', ['token' => $token], function(Message $message)use($email){
-            $message->to($email);
-            $message->subject('Password Reset');
-        });
+        // Mail::send('emails.index', ['token' => $token], function(Message $message)use($email){
+        //     $message->to($email);
+        //     $message->subject('Password Reset');
+        // });
 
         return BaseResponse::success('Password Reset Email Sent.. check your email', 200);
 
     }
 
     public function reset(Request $request, $token){
+        //validate input password user
         $request->validate([
             'password' => 'required|min:8|confirmed',
         ]);
 
+        //to retrieve the token from the password reset table
         $passwordReset = PasswordReset::where('token', $token)->first();
 
+        //to check whether the token exists in the database or not
         if(!$passwordReset){
             return BaseResponse::error('Token is invalid or expired', 404);
         }
 
+        //to retrieve data from the user table based on the email in the passwordreset table
         $user = User::where('email', $passwordReset->email)->first();
+        //to req passwrod from table user
         $user->password = $request->password;
+        //to update password in table user
         $user->update();
 
+        //to delete data email in password reset table after password update
         PasswordReset::where('email', $user->email)->delete();
 
         return BaseResponse::success('Reset Password Success', 200);
