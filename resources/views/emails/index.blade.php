@@ -32,7 +32,7 @@
           </tr>
           <tr>
             <td style="text-align:center;">
-              <a href="https://rakeshmandal.com" title="logo" target="_blank">
+              <a href="https://metrics-fe.fly.dev" title="Metrics" target="_blank">
                 <img width="200" src="https://i.ibb.co/Fq4J9xS/Logo.png" title="Metrics" alt="Metrics">
               </a>
             </td>
@@ -75,7 +75,7 @@
           <tr>
             <td style="text-align:center;">
               <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">
-                &copy; <strong>www.metrics.com</strong></p>
+                &copy; <strong>metrics-fe.fly.dev</strong></p>
             </td>
           </tr>
           <tr>

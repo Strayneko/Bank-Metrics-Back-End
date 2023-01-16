@@ -44,10 +44,10 @@ class PasswordResets extends Controller
 
         // dump("http://127.0.0.1:8000/api/reset/user/" . $token);
 
-        // Mail::send('emails.index', ['token' => $token], function(Message $message)use($email){
-        //     $message->to($email);
-        //     $message->subject('Password Reset');
-        // });
+        Mail::send('emails.index', ['token' => $token], function(Message $message)use($email){
+            $message->to($email);
+            $message->subject('Password Reset');
+        });
 
         return BaseResponse::success('Password Reset Email Sent.. check your email', 200);
 
