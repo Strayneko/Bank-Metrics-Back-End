@@ -47,14 +47,13 @@ class BankController extends Controller
 
     function update(Request $request, $id)
     {
-
         $bank = Bank::query()->where('id', $id)->first();
         if (!$bank) BaseResponse::error('Data was not found', 404);
         // validating request (form data)
         try {
             $validated = $request->validate([
                 'name' => [ 'max:50', 'min:3'],
-                'loaning_percentage' => [ 'numeric', 'min:1', '100'],
+                'loaning_percentage' => [ 'numeric', 'min:1', 'max:100'],
                 'max_age' => [ 'min:1', 'max:150',  'numeric'],
                 'min_age' => [ 'min:1', 'max:150'],
                 'marital_status' => [ 'numeric', 'digits_between:0,1'],

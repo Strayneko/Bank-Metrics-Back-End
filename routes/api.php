@@ -67,7 +67,7 @@ Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
     Route::get('/show/{id}', [BankController::class, 'show']);
     Route::post('/create', [BankController::class, 'store']);
     Route::post('/edit/{id}', [BankController::class, 'update']);
-    // Route::post('/delete/{id}', [BankController::class,'destroy']);
+    Route::post('/delete/{id}', [BankController::class,'destroy']);
 });
 
 // loan group prefix
