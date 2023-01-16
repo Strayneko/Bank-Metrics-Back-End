@@ -119,7 +119,7 @@ class LoanController extends Controller
                 [
                     'user_id' => $user->id,
                     'loan_amount' => $request->input('loan_amount'),
-                    'status' => 0,
+                    'status' => 1,
                 ]
             );
             // if there is bank accepted the loaning
@@ -163,7 +163,7 @@ class LoanController extends Controller
         ]);
     }
 
-    public function index(Request $request, $user_id)
+    public function index(Request $request)
     {
 
         // check user access
@@ -173,7 +173,7 @@ class LoanController extends Controller
             return BaseResponse::error($e->getMessage(), 403);
         }
         // get all loan data
-        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank', 'user'])->where('user_id', $user_id);
+        $loans = Loan::with(['accepted_bank', 'accepted_bank.bank', 'user']);
 
         // check if there is type query parameter
         if ($request->query('status')) {
