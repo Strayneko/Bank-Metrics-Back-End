@@ -42,8 +42,6 @@ class PasswordResets extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        // dump("http://127.0.0.1:8000/api/reset/user/" . $token);
-
         Mail::send('emails.index', ['token' => $token], function(Message $message)use($email){
             $message->to($email);
             $message->subject('Password Reset');
@@ -79,4 +77,5 @@ class PasswordResets extends Controller
 
         return BaseResponse::success('Reset Password Success', 200);
     }
+
 }
