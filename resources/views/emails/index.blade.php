@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 495167cc1322246c4260a2b49b687379da093072
 <!doctype html>
 <html lang="en-US">
 
