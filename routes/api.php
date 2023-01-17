@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthUserContoller;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PasswordResets;
+use App\Http\Response\BaseResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +22,16 @@ use App\Http\Controllers\PasswordResets;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum', 'hasApiKey'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/', fn () => BaseResponse::success(message: 'Metrics API'));
 
 // auth grouping
 Route::prefix('auth')
     ->controller(AuthUserContoller::class)
+    ->middleware('hasApiKey')
     ->group(function () {
         Route::post('/register',  'register');
         Route::post('/login',  'login')->name('login');
@@ -43,7 +46,7 @@ Route::post('/passwordReset', [PasswordResets::class, 'password_reset']);
 Route::post('/resetPassword/{token}', [PasswordResets::class, 'reset']);
 
 Route::prefix('admin')
-    ->middleware(["auth:sanctum", 'isAdmin'])
+    ->middleware(["auth:sanctum", 'isAdmin', 'hasApiKey'])
     ->group(function () {
         Route::get('/', [AdminController::class, 'index']);
         Route::get('/show/{id}', [AdminController::class, 'show']);
@@ -53,7 +56,7 @@ Route::prefix('admin')
     });
 
 Route::prefix('user')
-    ->middleware('auth:sanctum')
+    ->middleware(['auth:sanctum', 'hasApiKey'])
     ->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/me', [UserController::class, 'show']);
@@ -62,7 +65,7 @@ Route::prefix('user')
         // Route::post('/delete/{id}', [UserController::class,'destroy']);
     });
 
-Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
+Route::prefix('bank')->middleware(["auth:sanctum", 'hasApiKey'])->group(function () {
     Route::get('/', [BankController::class, 'index']);
     Route::get('/show/{id}', [BankController::class, 'show']);
     Route::post('/create', [BankController::class, 'store']);
@@ -73,7 +76,7 @@ Route::prefix('bank')->middleware("auth:sanctum")->group(function () {
 // loan group prefix
 Route::prefix('loan')
     ->controller(LoanController::class)
-    ->middleware('auth:sanctum')
+    ->middleware(['auth:sanctum', 'hasApiKey'])
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/list/', 'list_loan');
