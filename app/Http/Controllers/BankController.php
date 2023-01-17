@@ -32,9 +32,9 @@ class BankController extends Controller
                 'loaning_percentage' => ['required', 'numeric', 'min:1', 'max:100'],
                 'max_age' => ['required', 'min:1', 'max:150',  'numeric'],
                 'min_age' => ['required', 'min:1', 'max:150'],
-                'marital_status' => ['required', 'numeric', 'digits_between:0,1'],
-                'nationality' => ['required', 'numeric', 'min:1'],
-                'employment' => ['required', 'numeric', 'digits_between:0,1'],
+                'marital_status' => ['required', 'numeric', 'digits_between:0,2'],
+                'nationality' => ['required', 'numeric', 'digits_between:0,2'],
+                'employment' => ['required', 'numeric', 'digits_between:0,2'],
             ]);
             // return error based on validation error
         } catch (\Illuminate\Validation\ValidationException $validate) {
@@ -56,9 +56,9 @@ class BankController extends Controller
                 'loaning_percentage' => [ 'numeric', 'min:1', 'max:100'],
                 'max_age' => [ 'min:1', 'max:150',  'numeric'],
                 'min_age' => [ 'min:1', 'max:150', 'numeric'],
-                'marital_status' => [ 'numeric', 'digits_between:0,1'],
-                'nationality' => [ 'numeric', 'min:1'],
-                'employment' => [ 'numeric', 'digits_between:0,1'],
+                'marital_status' => [ 'numeric', 'digits_between:0,2'],
+                'nationality' => [ 'numeric', 'digits_between:0,2'],
+                'employment' => [ 'numeric', 'digits_between:0,2'],
             ]);
             // return error based on validation error
         } catch (\Illuminate\Validation\ValidationException $validate) {
