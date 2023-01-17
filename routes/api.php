@@ -31,7 +31,6 @@ Route::get('/', fn () => BaseResponse::success(message: 'Metrics API'));
 // auth grouping
 Route::prefix('auth')
     ->controller(AuthUserContoller::class)
-    ->middleware('hasApiKey')
     ->group(function () {
         Route::post('/register',  'register');
         Route::post('/login',  'login')->name('login');
