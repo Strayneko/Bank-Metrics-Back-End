@@ -18,7 +18,7 @@ class HasApiKey
     public function handle(Request $request, Closure $next)
     {
         // generate payload
-        $payload = $request->header('Authorization')  . $request->getPathInfo() . $request->header('user-agent') . $request->header('Request-Time') . env('SECRET_KEY');
+        $payload = $request->header('Authorization')  . $request->getPathInfo() . $request->header('user-agent') . $request->header('Request-Time');
         // hash payload with sha256 to get unique api key
         $api_key = hash('sha256', $payload);
         // if there is no api key in header, reject the request
