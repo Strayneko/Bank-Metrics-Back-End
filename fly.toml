@@ -30,7 +30,7 @@ processes = []
   MAIL_PASSWORD="bzlkamddlrvychst"
   MAIL_ENCRYPTION="tls"
   MAIL_FROM_ADDRESS="metricsfarcap@gmail.com"
-  MAIL_FROM_NAME="${APP_NAME}"
+  MAIL_FROM_NAME="Metrics"
 
 
 [deploy]
