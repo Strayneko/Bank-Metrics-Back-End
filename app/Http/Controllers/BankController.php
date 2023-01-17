@@ -55,7 +55,7 @@ class BankController extends Controller
                 'name' => [ 'max:50', 'min:3'],
                 'loaning_percentage' => [ 'numeric', 'min:1', 'max:100'],
                 'max_age' => [ 'min:1', 'max:150',  'numeric'],
-                'min_age' => [ 'min:1', 'max:150'],
+                'min_age' => [ 'min:1', 'max:150', 'numeric'],
                 'marital_status' => [ 'numeric', 'digits_between:0,1'],
                 'nationality' => [ 'numeric', 'min:1'],
                 'employment' => [ 'numeric', 'digits_between:0,1'],
