@@ -165,7 +165,6 @@ class LoanController extends Controller
 
     public function index(Request $request)
     {
-
         // check user access
         try {
             $this->authorize('admin');
