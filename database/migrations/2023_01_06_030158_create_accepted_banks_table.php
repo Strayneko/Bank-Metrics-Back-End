@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('loan_id');
             $table->foreignId('bank_id');
-            $table->integer('loaned_amount')->default(0);
+            $table->string('loaned_amount')->default(0);
             $table->timestamps();
         });
     }
