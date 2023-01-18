@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Response\BaseResponse;
 use App\Models\Bank;
 use Illuminate\Http\Request;
@@ -64,7 +65,7 @@ class BankController extends Controller
         } catch (\Illuminate\Validation\ValidationException $validate) {
             return BaseResponse::error($validate->validator->errors()->all());
         }
-        
+
         $bank->fill($validated);
         $bank->save();
         return BaseResponse::success($bank, 'Data was successfully updated');
