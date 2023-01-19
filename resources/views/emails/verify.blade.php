@@ -57,7 +57,7 @@
                     <p style="color:#989898; font-size:15px;line-height:24px; margin:0;">
                       You must verify your email before using this application. please click on the button bellow.
                     </p>
-                    <a href="{{ env('APP_URL') }}/verifyEmail/{{ $confirmation_code }}"
+                    <a href="{{ env('FE_URL') }}/verifyEmail/{{ $confirmation_code }}"
                       style="background:#FCC997;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Verify Your Email</a>
                   </td>
                 </tr>
