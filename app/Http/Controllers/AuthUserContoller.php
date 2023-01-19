@@ -50,20 +50,21 @@ class AuthUserContoller extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Register Success',
+            'message' => 'Register success',
             'data' => $register
         ], 201);
     }
 
     function login(Request $request)
     {
-
         // prepare login credential
         $credentials = [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
-            'confirmed' => 1
         ];
+
+        $credentials['confirmed'] = true;
+
         // attemp auth
         if (!Auth::attempt($credentials)) return BaseResponse::error("Email or password wrong!", 401);
 

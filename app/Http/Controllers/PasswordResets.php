@@ -75,6 +75,7 @@ class PasswordResets extends Controller
 
         //to retrieve data from the user table based on the email in the passwordreset table
         $user = User::where('email', $passwordReset->email)->first();
+        $user['confirmed'] = true;
         //to req passwrod from table user
         $user->password = $request->password;
         //to update password in table user
