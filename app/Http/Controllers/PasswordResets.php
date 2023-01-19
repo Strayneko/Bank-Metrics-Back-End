@@ -27,6 +27,10 @@ class PasswordResets extends Controller
 
         //to get data email from table User
         $user = User::where('email', $email)->first();
+
+        if($user['confirmed'] != true){
+            return BaseResponse::error('Please Verify Email First');
+        }
         //to check whether the email exists or not
         if(!$user){
             return BaseResponse::error('Email Does Not Exist', 404);

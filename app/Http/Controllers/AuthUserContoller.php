@@ -63,10 +63,16 @@ class AuthUserContoller extends Controller
             'password' => $request->input('password'),
         ];
 
-        $credentials['confirmed'] = true;
+        $email = $request->email;
+        $confirmed = User::where('email', $email)->first();
 
+        if($confirmed['confirmed'] != true){
+            return BaseResponse::error("Please Verify Your Email First");
+        }
         // attemp auth
-        if (!Auth::attempt($credentials)) return BaseResponse::error("Email or password wrong!", 401);
+        if (!Auth::attempt($credentials)) {
+            return BaseResponse::error("Email or password wrong!", 401);
+        }
 
         // get user data
         $user = User::find(Auth::user()->id)->makeHidden(['created_at', 'updated_at']);
