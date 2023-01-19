@@ -19,7 +19,7 @@ return new class extends Migration
             // 0. rejected
             // 1. accepted
             $table->tinyInteger('status');
-            $table->integer('loan_amount')->default(0);
+            $table->string('loan_amount')->default(0);
             $table->timestamps();
         });
     }
