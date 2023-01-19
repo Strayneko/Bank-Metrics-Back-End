@@ -107,7 +107,7 @@ class AuthUserContoller extends Controller
         }
 
         $dateTime = Carbon::now()->format('Y-m-d H:i:s');
-        $user->confirmed = 1;
+        $user->confirmed = true;
         $user->confirmation_code = null;
         $user->email_verified_at = $dateTime;
         $user->save();
