@@ -58,7 +58,7 @@ Route::prefix('admin')
     });
 
 Route::prefix('user')
-    ->middleware(['auth:sanctum', 'hasApiKey', 'verified'])
+    ->middleware(['auth:sanctum', 'hasApiKey'])
     ->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/me', [UserController::class, 'show']);
