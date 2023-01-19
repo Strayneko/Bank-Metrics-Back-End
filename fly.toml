@@ -13,6 +13,7 @@ processes = []
 [env]
   APP_ENV = "production"
   APP_URL = "https://metrics-be.fly.dev"
+  FE_URL= "https://metrics-fe.fly.dev"
   LOG_CHANNEL = "stderr"
   LOG_LEVEL = "info"
   APP_NAME="Metrics"
