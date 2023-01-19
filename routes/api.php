@@ -10,6 +10,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PasswordResets;
 use App\Http\Response\BaseResponse;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,8 +34,10 @@ Route::prefix('auth')
     ->controller(AuthUserContoller::class)
     ->group(function () {
         Route::post('/register',  'register');
+        Route::get('/index', 'index');
         Route::post('/login',  'login')->name('login');
         Route::post('/logout',  'logout')->middleware("auth:sanctum");
+        Route::get('/verifications/{confirmation_code}',  'verification');
     });
 
 // list country
@@ -55,7 +58,7 @@ Route::prefix('admin')
     });
 
 Route::prefix('user')
-    ->middleware(['auth:sanctum', 'hasApiKey'])
+    ->middleware(['auth:sanctum', 'hasApiKey', 'verified'])
     ->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/me', [UserController::class, 'show']);
@@ -75,7 +78,7 @@ Route::prefix('bank')->middleware(["auth:sanctum", 'hasApiKey'])->group(function
 // loan group prefix
 Route::prefix('loan')
     ->controller(LoanController::class)
-    ->middleware(['auth:sanctum', 'hasApiKey'])
+    ->middleware(['auth:sanctum', 'hasApiKey', 'verified'])
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/list/', 'list_loan');

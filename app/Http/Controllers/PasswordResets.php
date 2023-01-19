@@ -53,9 +53,17 @@ class PasswordResets extends Controller
 
     public function reset(Request $request, $token){
         //validate input password user
-        $request->validate([
-            'password' => 'required|min:8|confirmed',
-        ]);
+        try {
+            $request->validate([
+                'password' => ['required', 'min:8', 'confirmed'],
+            ]);
+
+        }  catch (\Illuminate\Validation\ValidationException $validate) {
+            return response()->json([
+                'status' => false,
+                'message' => $validate->validator->errors()->all()
+            ], 403);
+        }
 
         //to retrieve the token from the password reset table
         $passwordReset = PasswordReset::where('token', $token)->first();

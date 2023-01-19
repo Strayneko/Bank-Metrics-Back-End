@@ -59,9 +59,8 @@
                       password has been generated for you. To reset your password, click the
                       following link and follow the instructions.
                     </p>
-                    <a href="http://127.0.0.1:4000/resetpassword/{{ $token }}"
-                      style="background:#FCC997;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
-                      Password</a>
+                    <a href="http://127.0.0.1:4000/verifyEmail/{{ $confirmation_code }}"
+                      style="background:#FCC997;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Verify Your Email</a>
                   </td>
                 </tr>
                 <tr>

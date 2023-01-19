@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Faker\Provider\Base;
 
 class AuthUserContoller extends Controller
 {
-    public function register(Request $rq)
+    function register(Request $rq)
     {
         //validate user input register
         try {
@@ -34,10 +35,19 @@ class AuthUserContoller extends Controller
 
         //payload request all register
         $payload = $rq->all();
+
+        $confirmation_code = Str::random(30);
         // set default role id for user
         $payload['role_id'] = 1;
+        $payload['confirmation_code'] = $confirmation_code;
         //create all input register user
         $register = User::create($payload);
+
+        Mail::send('emails.verify', ['confirmation_code' => $confirmation_code], function(Message $m) use($rq) {
+            $m->to($rq->email);
+            $m->subject('Konfirmasi alamat email anda');
+        });
+
         return response()->json([
             'status' => true,
             'message' => 'Register Success',
@@ -45,13 +55,14 @@ class AuthUserContoller extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    function login(Request $request)
     {
 
         // prepare login credential
         $credentials = [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
+            'confirmed' => 1
         ];
         // attemp auth
         if (!Auth::attempt($credentials)) return BaseResponse::error("Email or password wrong!", 401);
@@ -69,10 +80,30 @@ class AuthUserContoller extends Controller
     }
 
 
-    public function logout(Request $request)
+    function logout(Request $request)
     {
         //to delete token after user logout
         $request->user()->currentAccessToken()->delete();
         return BaseResponse::success(null, 'Logout Success');
+    }
+
+    function verification($confirmation_code){
+        if(!$confirmation_code){
+            return BaseResponse::error('Not Confirmation Code');
+        }
+
+        $user = User::where('confirmation_code', $confirmation_code)->where('role_id', 1)->first();
+
+        if(!$user){
+            return BaseResponse::error('Not Confirmation Code');
+        }
+
+        $dateTime = Carbon::now()->format('Y-m-d H:i:s');
+        $user->confirmed = 1;
+        $user->confirmation_code = null;
+        $user->email_verified_at = $dateTime;
+        $user->save();
+
+        return BaseResponse::success('Verification Success', 200);
     }
 }
