@@ -78,7 +78,7 @@ Route::prefix('bank')->middleware(["auth:sanctum", 'hasApiKey'])->group(function
 // loan group prefix
 Route::prefix('loan')
     ->controller(LoanController::class)
-    ->middleware(['auth:sanctum', 'hasApiKey', 'verified'])
+    ->middleware(['auth:sanctum', 'hasApiKey'])
     ->group(function () {
         Route::post('/get_loan', 'loan');
         Route::get('/list/', 'list_loan');

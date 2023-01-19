@@ -66,12 +66,13 @@ class AuthUserContoller extends Controller
         $email = $request->email;
         $confirmed = User::where('email', $email)->first();
 
-        if($confirmed['confirmed'] != true){
-            return BaseResponse::error("Please Verify Your Email First");
-        }
         // attemp auth
         if (!Auth::attempt($credentials)) {
             return BaseResponse::error("Email or password wrong!", 401);
+        }
+
+        if($confirmed['confirmed'] != true){
+            return BaseResponse::error("Please Verify Your Email First");
         }
 
         // get user data
