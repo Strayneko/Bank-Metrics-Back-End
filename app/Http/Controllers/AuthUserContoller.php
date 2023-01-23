@@ -36,13 +36,15 @@ class AuthUserContoller extends Controller
         //payload request all register
         $payload = $rq->all();
 
+        //create token/code for verify email user
         $confirmation_code = Str::random(30);
         // set default role id for user
         $payload['role_id'] = 1;
+        // push token/code to table user
         $payload['confirmation_code'] = $confirmation_code;
         //create all input register user
         $register = User::create($payload);
-
+        //send view email for verify email user with token/code
         Mail::send('emails.verify', ['confirmation_code' => $confirmation_code], function(Message $m) use($rq) {
             $m->to($rq->email);
             $m->subject('Konfirmasi alamat email anda');
@@ -63,6 +65,7 @@ class AuthUserContoller extends Controller
             'password' => $request->input('password'),
         ];
 
+        //get email user to validate verify email
         $email = $request->email;
         $confirmed = User::where('email', $email)->first();
 
@@ -71,6 +74,7 @@ class AuthUserContoller extends Controller
             return BaseResponse::error("Email or password wrong!", 401);
         }
 
+        // Check whether the user has verified email or not
         if($confirmed['confirmed'] != true){
             return BaseResponse::error("Please Verify Your Email First");
         }
@@ -96,19 +100,26 @@ class AuthUserContoller extends Controller
     }
 
     function verification($confirmation_code){
+        //to check whether the token / code is still there or not
         if(!$confirmation_code){
             return BaseResponse::error('Not Confirmation Code');
         }
 
+        //to retrieve user data based on email and role
         $user = User::where('confirmation_code', $confirmation_code)->where('role_id', 1)->first();
 
+        //to check wheter user is still or not
         if(!$user){
-            return BaseResponse::error('Not Confirmation Code');
+            return BaseResponse::error('User Not Found');
         }
 
+        //to set date now
         $dateTime = Carbon::now()->format('Y-m-d H:i:s');
+        //to set value confirmed to true
         $user->confirmed = true;
+        //to set value confirmed to null
         $user->confirmation_code = null;
+        //to set value email verification based on datetime
         $user->email_verified_at = $dateTime;
         $user->save();
 
