@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Response\BaseResponse;
+use App\Jobs\SendEmail;
 use App\Models\User;
 use App\Models\PasswordReset;
 use Illuminate\Http\Request;
@@ -44,11 +45,9 @@ class AuthUserContoller extends Controller
         $payload['confirmation_code'] = $confirmation_code;
         //create all input register user
         $register = User::create($payload);
-        //send view email for verify email user with token/code
-        Mail::send('emails.verify', ['confirmation_code' => $confirmation_code], function(Message $m) use($rq) {
-            $m->to($rq->email);
-            $m->subject('Konfirmasi alamat email anda');
-        });
+
+        // send email using queue
+        SendEmail::dispatch($rq->email, $confirmation_code, 'verification');
 
         return response()->json([
             'status' => true,
@@ -74,8 +73,7 @@ class AuthUserContoller extends Controller
             return BaseResponse::error("Email or password wrong!", 401);
         }
 
-        // Check whether the user has verified email or not
-        if($confirmed['confirmed'] != true){
+        if ($confirmed['confirmed'] != true) {
             return BaseResponse::error("Please Verify Your Email First");
         }
 
