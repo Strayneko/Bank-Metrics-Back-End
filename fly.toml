@@ -37,7 +37,7 @@ processes = []
 
 
 [deploy]
-  release_command = "php artisan migrate:fresh --seed && php /var/www/html/artisan storage:link && php /var/www/html/artisan queue:work"
+  release_command = "php /var/www/html/artisan migrate:fresh --seed && php /var/www/html/artisan storage:link && php /var/www/html/artisan queue:work"
 
 [experimental]
   auto_rollback = true
