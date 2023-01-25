@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Response\BaseResponse;
+use App\Jobs\SendEmail;
 use App\Mail\SendMail;
 use App\Models\PasswordReset;
 use App\Models\User;
@@ -16,7 +17,8 @@ use Illuminate\Support\Str;
 
 class PasswordResets extends Controller
 {
-    public function password_reset(Request $request){
+    public function password_reset(Request $request)
+    {
         //validate user input
         $request->validate([
             'email' => 'required|email',
@@ -28,11 +30,11 @@ class PasswordResets extends Controller
         //to get data email from table User
         $user = User::where('email', $email)->first();
 
-        if($user['confirmed'] != true){
+        if ($user['confirmed'] != true) {
             return BaseResponse::error('Please Verify Email First');
         }
         //to check whether the email exists or not
-        if(!$user){
+        if (!$user) {
             return BaseResponse::error('Email Does Not Exist', 404);
         }
 
@@ -46,23 +48,20 @@ class PasswordResets extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        Mail::send('emails.index', ['token' => $token], function(Message $message)use($email){
-            $message->to($email);
-            $message->subject('Password Reset');
-        });
+        // send email using queue
+        SendEmail::dispatch($request->email, $token, 'reset_password');
 
         return BaseResponse::success('Password Reset Email Sent.. check your email', 200);
-
     }
 
-    public function reset(Request $request, $token){
+    public function reset(Request $request, $token)
+    {
         //validate input password user
         try {
             $request->validate([
                 'password' => ['required', 'min:8', 'confirmed'],
             ]);
-
-        }  catch (\Illuminate\Validation\ValidationException $validate) {
+        } catch (\Illuminate\Validation\ValidationException $validate) {
             return response()->json([
                 'status' => false,
                 'message' => $validate->validator->errors()->all()
@@ -73,7 +72,7 @@ class PasswordResets extends Controller
         $passwordReset = PasswordReset::where('token', $token)->first();
 
         //to check whether the token exists in the database or not
-        if(!$passwordReset){
+        if (!$passwordReset) {
             return BaseResponse::error('Token is invalid or expired', 404);
         }
 
@@ -90,5 +89,4 @@ class PasswordResets extends Controller
 
         return BaseResponse::success('Reset Password Success', 200);
     }
-
 }
