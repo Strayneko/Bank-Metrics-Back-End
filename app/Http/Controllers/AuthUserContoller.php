@@ -46,10 +46,8 @@ class AuthUserContoller extends Controller
         //create all input register user
         $register = User::create($payload);
 
-        Mail::send('emails.verify', ['confirmation_code' => $confirmation_code], function(Message $m) use($rq) {
-            $m->to($rq->email);
-            $m->subject('Konfirmasi alamat email anda');
-        });
+        // send email using queue
+        SendEmail::dispatch($rq->email, $confirmation_code, 'verification');
 
         return response()->json([
             'status' => true,
@@ -99,15 +97,16 @@ class AuthUserContoller extends Controller
         return BaseResponse::success(null, 'Logout Success');
     }
 
-    function verification($confirmation_code){
-        if(!$confirmation_code){
+    function verification($confirmation_code)
+    {
+        if (!$confirmation_code) {
             return BaseResponse::error('Not Confirmation Code');
         }
 
         //to retrieve user data based on email and role
         $user = User::where('confirmation_code', $confirmation_code)->where('role_id', 1)->first();
 
-        if(!$user){
+        if (!$user) {
             return BaseResponse::error('Not Confirmation Code');
         }
 
