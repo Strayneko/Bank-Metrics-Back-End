@@ -43,15 +43,16 @@ class UserController extends Controller
         return BaseResponse::success($user);
     }
 
-    
+
     function store_profile(Request $request)
     {
         // get authenticated user
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
 
         // check if user is inserted their profile
         $profile = UserProfile::where('user_id', $user->id)->first();
         $rules = $profile ? [
+            'name'    => 'min:5|max:50|regex:/^[\pL\s]+$/u',
             'address' => 'min:1',
             'country_id' => 'numeric|min:1',
             'marital_status' => 'min:0',
@@ -106,6 +107,7 @@ class UserController extends Controller
             $imgName = Str::of($profile->photo)->remove($request->getSchemeAndHttpHost() . '/storage/');
             if ($request->file('photo')) Storage::disk('public')->delete($imgName);
             // update user profile
+            $user->update(['name' => $validated['name']]);
             $profile->update($validated);
             return BaseResponse::success($profile, 'Data was successfully Updated');
         }
