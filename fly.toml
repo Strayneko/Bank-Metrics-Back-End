@@ -34,7 +34,10 @@ processes = []
   MAIL_FROM_NAME="Metrics"
   QUEUE_CONNECTION="database"
 
-
+[processes]
+  app = ""
+  cron = "cron -f"
+  worker = "php /var/www/html/artisan queue:work"
 
 [deploy]
   release_command = "php /var/www/html/artisan migrate:fresh --seed --force"
