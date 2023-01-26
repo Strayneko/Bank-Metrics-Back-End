@@ -43,15 +43,16 @@ class UserController extends Controller
         return BaseResponse::success($user);
     }
 
-    
+
     function store_profile(Request $request)
     {
         // get authenticated user
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
 
         // check if user is inserted their profile
         $profile = UserProfile::where('user_id', $user->id)->first();
         $rules = $profile ? [
+            'name'    => 'min:5|max:50|regex:/^[\pL\s]+$/u',
             'address' => 'min:1',
             'country_id' => 'numeric|min:1',
             'marital_status' => 'min:0',
@@ -60,11 +61,12 @@ class UserController extends Controller
             'gender' => 'digits_between:0,1|numeric',
             'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
         ] : [
-            'address' => 'required',
+            'name'    => 'min:5|max:50|regex:/^[\pL\s]+$/u',
+            'address' => 'required|min:3',
             'country_id' => 'required|numeric|min:1',
-            'marital_status' => 'required',
-            'dob' => 'required',
-            'employement' => 'required',
+            'marital_status' => 'required|numeric',
+            'dob' => 'required|date',
+            'employement' => 'required|numeric',
             'gender' => 'required|digits_between:0,1|numeric',
             'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
         ];
@@ -110,6 +112,9 @@ class UserController extends Controller
             return BaseResponse::success($profile, 'Data was successfully Updated');
         }
 
+        // update user name
+        $user->update(['name' => $validated['name']]);
+        // create user profile
         $profile = UserProfile::create($validated);
 
 
