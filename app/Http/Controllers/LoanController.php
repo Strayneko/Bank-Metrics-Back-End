@@ -47,7 +47,7 @@ class LoanController extends Controller
     {
         // validate user input
         $validate = Validator::make($request->all(), [
-            'loan_amount' => 'required|numeric|min:1000',
+            'loan_amount' => 'required|numeric|min:100',
         ]);
 
         // check validation status
@@ -155,9 +155,11 @@ class LoanController extends Controller
         if ($request->query('user_id')) $user_id = $request->query('user_id');
 
         // get loan data with accepted_bank, loan_reason, and bank data
-        $loans = Loan::with(['accepted_bank', 'loan_reason', 'loan_reason.bank',  'accepted_bank.bank'])->where('user_id', $user_id)->get();
+        $loans = Loan::with(['accepted_bank', 'loan_reason', 'loan_reason.bank' => fn ($query) => $query->withTrashed(),  'accepted_bank.bank' => fn ($query) => $query->withTrashed()])->where('user_id', $user_id)->get();
+
         // check loan data
         if (count($loans) == 0) return BaseResponse::error('No loan data found for userid = ' . $user_id, 404);
+
         return BaseResponse::success(data: [
             'loans' => $loans
         ]);
@@ -195,7 +197,7 @@ class LoanController extends Controller
         // check rejection reason availability
         if (count($rejection_reasons) == 0) return BaseResponse::error('No Loan Reason data found!');
         $data = collect([]);
-        $banks = Bank::all();
+        $banks = Bank::withTrashed()->get();
         foreach ($rejection_reasons as $reason) {
             // filter bank data 
             $bank = $banks->filter(fn ($bank) => $reason->bank_id == $bank->id)->first();

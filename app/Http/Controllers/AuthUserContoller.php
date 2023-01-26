@@ -22,7 +22,7 @@ class AuthUserContoller extends Controller
         //validate user input register
         try {
             $rq->validate([
-                'name' => ['required', 'min:5', 'max:50'],
+                'name' => ['required', 'min:5', 'max:50', 'regex:/^[\pL\s]+$/u'],
                 'email' => ['required', 'unique:users,email', 'email', 'max:50', 'min:3'],
                 'password' => ['required', 'min:8']
             ]);
@@ -97,9 +97,10 @@ class AuthUserContoller extends Controller
         return BaseResponse::success(null, 'Logout Success');
     }
 
-    function verification($confirmation_code){
+    function verification($confirmation_code)
+    {
         //to check whether the token / code is still there or not
-        if(!$confirmation_code){
+        if (!$confirmation_code) {
             return BaseResponse::error('Not Confirmation Code');
         }
 
@@ -107,7 +108,7 @@ class AuthUserContoller extends Controller
         $user = User::where('confirmation_code', $confirmation_code)->where('role_id', 1)->first();
 
         //to check wheter user is still or not
-        if(!$user){
+        if (!$user) {
             return BaseResponse::error('User Not Found');
         }
 

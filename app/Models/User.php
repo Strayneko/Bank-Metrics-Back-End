@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,12 +22,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
         static::creating(function (User $user) {
             $user->password = Hash::make($user->password);
+            // trim and title case name
+            $user->name = Str::of($user->name)->title()->trim();
+            $user->email = Str::of($user->email)->lower()->trim(); //trim and lowercase email
+
         });
 
         static::updating(function (user $user) {
             if ($user->isDirty(['password'])) {
                 $user->password = hash::make($user->password);
             }
+            $user->name = Str::of($user->name)->title()->trim();
+            $user->email = Str::of($user->email)->lower()->trim(); //trim and lowercase email
         });
     }
 
