@@ -97,17 +97,18 @@ class AuthUserContoller extends Controller
         return BaseResponse::success(null, 'Logout Success');
     }
 
-    function verification($confirmation_code)
-    {
-        if (!$confirmation_code) {
+    function verification($confirmation_code){
+        //to check whether the token / code is still there or not
+        if(!$confirmation_code){
             return BaseResponse::error('Not Confirmation Code');
         }
 
         //to retrieve user data based on email and role
         $user = User::where('confirmation_code', $confirmation_code)->where('role_id', 1)->first();
 
-        if (!$user) {
-            return BaseResponse::error('Not Confirmation Code');
+        //to check wheter user is still or not
+        if(!$user){
+            return BaseResponse::error('User Not Found');
         }
 
         //to set date now

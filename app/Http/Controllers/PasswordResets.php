@@ -28,14 +28,15 @@ class PasswordResets extends Controller
         $email = $request->email;
 
         //to get data email from table User
-        $user = User::where('email', $email)->first();
+        $user = User::where('email', $email)->first(); // null
 
-        if ($user['confirmed'] != true) {
-            return BaseResponse::error('Please Verify Email First');
-        }
         //to check whether the email exists or not
         if (!$user) {
             return BaseResponse::error('Email Does Not Exist', 404);
+        }
+
+        if ($user['confirmed'] != true) {
+            return BaseResponse::error('Please Verify Email First');
         }
 
         //to create token
