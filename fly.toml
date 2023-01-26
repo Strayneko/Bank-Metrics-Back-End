@@ -1,50 +1,48 @@
-# fly.toml file generated for metrics-be on 2023-01-16T15:20:02+07:00
+# fly.toml file generated for metrics-api on 2023-01-26T14:06:55+07:00
 
-app = "metrics-be"
+app = "metrics-api"
 kill_signal = "SIGINT"
 kill_timeout = 5
-processes = []
 
 [build]
   [build.args]
     NODE_VERSION = "14"
-    PHP_VERSION = "8.1"
+    PHP_VERSION = "8.2"
+
+[deploy]
+  release_command = "php /var/www/html/artisan migrate:fresh --seed --force"
 
 [env]
   APP_ENV = "production"
-  APP_URL = "https://metrics-be.fly.dev"
-  FE_URL= "https://metrics-fe.fly.dev"
+  APP_NAME = "Metrics"
+  APP_URL = "https://metrics-api.fly.dev"
+  DB_CONNECTION = "pgsql"
+  DB_DATABASE = "metrics_be"
+  DB_HOST = "metrics-db.internal"
+  DB_PASSWORD = "TMDoUEfIk7m7wKf"
+  DB_PORT = "5432"
+  DB_USERNAME = "postgres"
+  FE_URL = "https://metrics-fe.fly.dev"
   LOG_CHANNEL = "stderr"
   LOG_LEVEL = "info"
-  FILESYSTEM_DISK="local"
-  APP_NAME="Metrics"
   LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
-  DB_CONNECTION="pgsql"
-  DB_HOST="metrics-db.internal"
-  DB_PORT="5432"
-  DB_DATABASE="metrics_be"
-  DB_USERNAME="postgres"
-  DB_PASSWORD="TMDoUEfIk7m7wKf"
-  MAIL_MAILER="smtp"
-  MAIL_HOST="smtp.gmail.com"
-  MAIL_PORT="587"
-  MAIL_USERNAME="metricsfarcap@gmail.com"
-  MAIL_PASSWORD="bzlkamddlrvychst"
-  MAIL_ENCRYPTION="tls"
-  MAIL_FROM_ADDRESS="metricsfarcap@gmail.com"
-  MAIL_FROM_NAME="Metrics"
-  QUEUE_CONNECTION="database"
+  MAIL_ENCRYPTION = "tls"
+  MAIL_FROM_ADDRESS = "metricsfarcap@gmail.com"
+  MAIL_FROM_NAME = "Metrics"
+  MAIL_HOST = "smtp.gmail.com"
+  MAIL_MAILER = "smtp"
+  MAIL_PASSWORD = "bzlkamddlrvychst"
+  MAIL_PORT = "587"
+  MAIL_USERNAME = "metricsfarcap@gmail.com"
+  QUEUE_CONNECTION = "database"
+
+[experimental]
+  auto_rollback = true
 
 [processes]
   app = ""
   cron = "cron -f"
   worker = "php /var/www/html/artisan queue:work"
-
-[deploy]
-  release_command = "php /var/www/html/artisan migrate:fresh --seed --force"
-
-[experimental]
-  auto_rollback = true
 
 [[services]]
   http_checks = []
