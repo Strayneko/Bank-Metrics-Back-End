@@ -10,7 +10,7 @@ kill_timeout = 5
     PHP_VERSION = "8.2"
 
 [deploy]
-  release_command = "php /var/www/html/artisan migrate:fresh --seed --force"
+  release_command = "php /var/www/html/artisan storage:link"
 
 [env]
   APP_ENV = "production"
