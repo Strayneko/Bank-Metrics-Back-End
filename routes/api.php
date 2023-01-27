@@ -69,6 +69,8 @@ Route::prefix('user')
 
 Route::prefix('bank')->middleware(["auth:sanctum", 'hasApiKey'])->group(function () {
     Route::get('/', [BankController::class, 'index']);
+    Route::get('/trash', [BankController::class, 'deletedindex']);
+    Route::get('/restore/{id}', [BankController::class, 'restore']);
     Route::get('/show/{id}', [BankController::class, 'show']);
     Route::post('/create', [BankController::class, 'store']);
     Route::post('/edit/{id}', [BankController::class, 'update']);

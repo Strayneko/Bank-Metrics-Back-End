@@ -15,6 +15,22 @@ class BankController extends Controller
         return BaseResponse::success($bank);
     }
 
+    function deletedindex()
+    {
+        // get all bank data
+        $bank = Bank::onlyTrashed()->get();
+        return BaseResponse::success($bank);
+    }
+
+    function restore($id){
+        $bank = Bank::withTrashed()->where('id',$id)->first();
+        if (!$bank){
+            return BaseResponse::error('Data was not found', 404);
+        }
+        $bank->restore();
+        return BaseResponse::success($bank,'Data Successfully Restored');
+    }
+
     function show($id)
     {
         // get bank data with certain id

@@ -40,6 +40,7 @@ class AdminController extends Controller
         }
         // creating new admin
         $validated['role_id'] = 2;
+        $validated['confirmed']= true;
         $user = User::create($validated);
         return BaseResponse::success($user, 'Data was successfully created');
     }

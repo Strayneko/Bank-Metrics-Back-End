@@ -101,6 +101,8 @@ class UserController extends Controller
         }
 
         $validated['user_id'] = $user->id;
+        // update user name
+        $user->update(['name' => $validated['name']]);
         // if user already submitted profile
         if ($profile) {
 
@@ -112,8 +114,6 @@ class UserController extends Controller
             return BaseResponse::success($profile, 'Data was successfully Updated');
         }
 
-        // update user name
-        $user->update(['name' => $validated['name']]);
         // create user profile
         $profile = UserProfile::create($validated);
 
