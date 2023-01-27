@@ -40,7 +40,7 @@ class SendEmail implements ShouldQueue
         if ($this->type == 'verification') {
             Mail::send('emails.verify', ['confirmation_code' => $this->token], function (Message $m) {
                 $m->to($this->email);
-                $m->subject('Konfirmasi alamat email anda');
+                $m->subject('Verify Your Email');
             });
         } else {
             // send email for password reset
