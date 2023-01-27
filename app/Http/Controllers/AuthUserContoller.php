@@ -68,11 +68,12 @@ class AuthUserContoller extends Controller
         $email = $request->email;
         $confirmed = User::where('email', $email)->first();
 
-        // attemp auth
+        // checks whether the user is authenticated or not
         if (!Auth::attempt($credentials)) {
             return BaseResponse::error("Email or password wrong!", 401);
         }
 
+        // check whether the user has verified email or not
         if ($confirmed['confirmed'] != true) {
             return BaseResponse::error("Please Verify Your Email First");
         }
@@ -114,9 +115,9 @@ class AuthUserContoller extends Controller
 
         //to set date now
         $dateTime = Carbon::now()->format('Y-m-d H:i:s');
-        //to set value confirmed to true
+        //to set value confirmed becomes true
         $user->confirmed = true;
-        //to set value confirmed to null
+        //to set value confirmed becomes null
         $user->confirmation_code = null;
         //to set value email verification based on datetime
         $user->email_verified_at = $dateTime;

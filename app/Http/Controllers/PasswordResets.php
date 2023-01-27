@@ -35,11 +35,12 @@ class PasswordResets extends Controller
             return BaseResponse::error('Email Does Not Exist', 404);
         }
 
+        // check whether the user has verified email or not
         if ($user['confirmed'] != true) {
             return BaseResponse::error('Please Verify Email First');
         }
 
-        //to create token
+        //to create token/code
         $token = Str::random(40);
 
         //to add data to table PasswordReset
