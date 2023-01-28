@@ -34,16 +34,16 @@ class AuthUserContoller extends Controller
             ], 403);
         }
 
-        //payload request all register
+        //to request all input data from the user user register
         $payload = $rq->all();
 
         //create token/code for verify email user
         $confirmation_code = Str::random(30);
         // set default role id for user
         $payload['role_id'] = 1;
-        // push token/code to table user
+        // enter token/code to table user
         $payload['confirmation_code'] = $confirmation_code;
-        //create all input register user
+        // to add user register data to database
         $register = User::create($payload);
 
         // send email using queue
@@ -78,7 +78,7 @@ class AuthUserContoller extends Controller
             return BaseResponse::error("Please Verify Your Email First");
         }
 
-        // get user data
+        // retrieve user data based on its id and authentication
         $user = User::find(Auth::user()->id)->makeHidden(['created_at', 'updated_at']);
         // add auth token to user data
         $token = $user->createToken('auth_token');

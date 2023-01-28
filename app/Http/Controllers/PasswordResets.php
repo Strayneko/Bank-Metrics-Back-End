@@ -24,10 +24,10 @@ class PasswordResets extends Controller
             'email' => 'required|email',
         ]);
 
-        //to save req email in variable email
+        //to retrieve the email entered by the user
         $email = $request->email;
 
-        //to get data email from table User
+        //to retrieve data user based on email from table User
         $user = User::where('email', $email)->first(); // null
 
         //to check whether the email exists or not
