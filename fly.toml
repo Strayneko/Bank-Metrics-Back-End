@@ -7,8 +7,8 @@ kill_timeout = 5
 [build]
   [build.args]
     NODE_VERSION = "14"
-    PHP_VERSION = "8.2"
-
+    PHP_VERSION = "8.1"
+    
 [deploy]
   release_command = "php /var/www/html/artisan storage:link"
 
@@ -35,6 +35,7 @@ kill_timeout = 5
   MAIL_PORT = "587"
   MAIL_USERNAME = "metricsfarcap@gmail.com"
   QUEUE_CONNECTION = "database"
+  COUNTRY_ID="102"
 
 [experimental]
   auto_rollback = true
