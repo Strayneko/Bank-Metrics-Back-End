@@ -51,7 +51,11 @@ class UserController extends Controller
 
         // check if user is inserted their profile
         $profile = UserProfile::where('user_id', $user->id)->first();
+
+        // set user profile rules
+
         $rules = $profile ? [
+            // if user profile already exist
             'name'    => 'min:5|max:50|regex:/^[\pL\s]+$/u',
             'address' => 'min:1',
             'country_id' => 'numeric|min:1',
@@ -61,6 +65,7 @@ class UserController extends Controller
             'gender' => 'digits_between:0,1|numeric',
             'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
         ] : [
+            // if user is not exist
             'name'    => 'min:5|max:50|regex:/^[\pL\s]+$/u',
             'address' => 'required|min:3',
             'country_id' => 'required|numeric|min:1',
@@ -70,16 +75,19 @@ class UserController extends Controller
             'gender' => 'required|digits_between:0,1|numeric',
             'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
         ];
+        // validate user input
         try {
-
             $validated = $request->validate($rules);
         } catch (\Illuminate\Validation\ValidationException $validate) {
+            // give validation error message if validation fails
             return BaseResponse::error($validate->validator->errors()->all());
         }
 
 
 
+        // chheck if user upload a photo
         if ($request->file('photo')) {
+            // store photo name with the current host and port
             $photo = $request->getSchemeAndHttpHost() . '/storage/' . $request->file('photo')->store('profile', 'public');
             $validated['photo'] = $photo;
         }
