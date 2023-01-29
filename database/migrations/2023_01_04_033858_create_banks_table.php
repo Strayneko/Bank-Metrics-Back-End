@@ -27,7 +27,7 @@ return new class extends Migration
             // 1. WNA
             // 2. both
             $table->tinyInteger('nationality');
-            // 0. half-time
+            // 0. non full-time
             // 1. full-time
             // 2. both
             $table->tinyInteger('employment');

@@ -16,6 +16,7 @@ class AcceptedBank extends Model
         'updated_at',
     ];
 
+    // relation to bank model
     public function bank()
     {
         return  $this->belongsTo(Bank::class, 'bank_id', 'id');

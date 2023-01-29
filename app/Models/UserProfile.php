@@ -12,6 +12,7 @@ class UserProfile extends Model
     protected $guarded = ['id'];
 
 
+    // relation to country model
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');

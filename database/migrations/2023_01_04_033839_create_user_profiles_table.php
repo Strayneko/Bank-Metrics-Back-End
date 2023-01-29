@@ -21,7 +21,7 @@ return new class extends Migration
             // 1. married
             $table->tinyInteger('marital_status');
             $table->date('dob');
-            // 0. half-time
+            // 0. non full-time
             // 1. full-time
             $table->tinyInteger('employement');
             // 0. female

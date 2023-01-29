@@ -13,6 +13,7 @@ class LoanReason extends Model
     protected $hidden = ['created_at', 'updated_at', 'id', 'loan_id', 'bank_id'];
 
 
+    // relation top bank model
     public function bank()
     {
         return $this->belongsTo(Bank::class, 'bank_id');
