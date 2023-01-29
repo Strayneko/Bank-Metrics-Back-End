@@ -12,7 +12,7 @@ class CountryController extends Controller
     public function index()
     {
         // get countries data
-        $countries = countries::getCountries();
+        $countries = Countries::getCountries();
         return BaseResponse::success($countries);
     }
 }

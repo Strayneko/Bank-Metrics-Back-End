@@ -13,6 +13,7 @@ use App\Models\Loan;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\Countries;
 
 class LoanController extends Controller
 {
@@ -72,6 +73,14 @@ class LoanController extends Controller
         // employment mapping
         $employments = ['Non Full Time', 'Full Time'];
 
+        // get country name with country_id in env
+        $country_name = collect(Countries::getCountries())->filter(fn ($country) => $country['id'] == env('COUNTRY_ID'));
+        // check country data
+        // give error message if country not found
+        if (count($country_name) == 0) return BaseResponse::error('No country data found!. Please check ENV file', 500);
+        // get country name
+        $country_name = $country_name->first()['name'];
+
         foreach ($banks as $idx => $bank) {
             $reasons[$bank->id] = collect([
                 'bank_id'   => $bank->id,
@@ -90,7 +99,7 @@ class LoanController extends Controller
             // check user employment status with bank requirement
             if ($bank->employment != $user->user_profile->employement && $bank->employment != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person who has ' . $employments[$bank->employment] . ' employment');
             // check user nationality with bank requirement
-            if ($bank->nationality == 0 && $user->user_profile->country->id != env('COUNTRY_ID')) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen');
+            if ($bank->nationality == 0 && $user->user_profile->country->id != env('COUNTRY_ID')) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept ' . $country_name . ' citizen');
         }
 
         // filter banks to accepted banks only
