@@ -79,16 +79,18 @@ class LoanController extends Controller
                 'bank_name' => $bank->name,
                 'reasons' => collect([])
             ]);
-            // check marital status
+
+            // check user profile, and store the reason if requirements is not met
+            // check user marital status with bank requirement
             if ($bank->marital_status != $user->user_profile->marital_status && $bank->marital_status != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept ' . $marital_statuses[$bank->marital_status] . ' Person!');
-            // check age
+            // check max user age with bank requirement
             if (Carbon::parse($user->user_profile->dob)->age > $bank->max_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person below ' . $bank->max_age . ' years old');
-            // check min age
+            // check min user age with bank requirement
             if (Carbon::parse($user->user_profile->dob)->age < $bank->min_age) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person above ' . $bank->min_age . ' years old');
-            // check employment status
+            // check user employment status with bank requirement
             if ($bank->employment != $user->user_profile->employement && $bank->employment != 2) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept person who has ' . $employments[$bank->employment] . ' employment');
-            // check user nationality
-            if ($bank->nationality == 0 && strtolower($user->user_profile->country->country_name) != 'indonesia') $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen');
+            // check user nationality with bank requirement
+            if ($bank->nationality == 0 && $user->user_profile->country->id != env('COUNTRY_ID')) $reasons[$bank->id]['reasons']->push($bank->name . ' only accept Indonesian citizen');
         }
 
         // filter banks to accepted banks only
