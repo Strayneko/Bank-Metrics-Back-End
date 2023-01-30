@@ -63,7 +63,7 @@ class UserController extends Controller
             'dob' => 'date',
             'employement' => 'min:0|numeric',
             'gender' => 'digits_between:0,1|numeric',
-            'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
+            'photo' => 'file|image|mimetypes:image/jpg,image/png,image/jpeg|max:2048'
         ] : [
             // if user is not exist
             'name'    => 'min:5|max:50|regex:/^[\pL\s]+$/u',
@@ -73,7 +73,7 @@ class UserController extends Controller
             'dob' => 'required|date',
             'employement' => 'required|numeric',
             'gender' => 'required|digits_between:0,1|numeric',
-            'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg|max:1024'
+            'photo' => 'required|file|image|mimetypes:image/jpg,image/png,image/jpeg|max:2048'
         ];
         // validate user input
         try {
