@@ -1,4 +1,4 @@
-# fly.toml file generated for metrics-api on 2023-01-26T14:06:55+07:00
+# fly.toml file generated for metrics-api on 2023-02-21T13:04:00+07:00
 
 app = "metrics-api"
 kill_signal = "SIGINT"
@@ -8,14 +8,12 @@ kill_timeout = 5
   [build.args]
     NODE_VERSION = "14"
     PHP_VERSION = "8.1"
-    
-[deploy]
-  release_command = "php /var/www/html/artisan storage:link"
 
 [env]
   APP_ENV = "production"
   APP_NAME = "Metrics"
   APP_URL = "https://metrics-api.fly.dev"
+  COUNTRY_ID = "102"
   DB_CONNECTION = "pgsql"
   DB_DATABASE = "metrics_be"
   DB_HOST = "metrics-db.internal"
@@ -35,7 +33,6 @@ kill_timeout = 5
   MAIL_PORT = "587"
   MAIL_USERNAME = "metricsfarcap@gmail.com"
   QUEUE_CONNECTION = "database"
-  COUNTRY_ID="102"
 
 [experimental]
   auto_rollback = true
